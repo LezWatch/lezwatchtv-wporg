@@ -1,12 +1,11 @@
 <?php
 /**
-
-Plugin Name: Bury Your Queers
-Plugin URI: http://lezwatchtv.com/cliche/dead/
-Description: Show the last dead queer female from LezWatchTV in a widget.
-Version: 1.0
-Author: Mika Epstein
-Author URI: http://halfelf.org/
+ Plugin Name: Bury Your Queers
+ Plugin URI: http://lezwatchtv.com/cliche/dead/
+ Description: Show the last dead queer female from LezWatchTV in a widget.
+ Version: 1.0
+ Author: Mika Epstein
+ Author URI: http://halfelf.org/
 */
 
 class Bury_Your_Queers {
@@ -16,6 +15,7 @@ class Bury_Your_Queers {
 	 */
 	public function __construct() {
 		add_action( 'widgets_init', array( $this, 'last_death_register_widget' ) );
+		add_action( 'init', array( $this, 'init' ) );
 	}
 
 	/**
@@ -28,8 +28,13 @@ class Bury_Your_Queers {
 	/**
 	 * Shortcode Of Last Death
 	 */
-	public function last_death_shortcode() {
-		echo $this->last_death();
+	public function last_death_shortcode( $atts ) {
+
+		$dead_character = $this->last_death();
+
+		echo '<p>'.sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$dead_character['since'].'</strong>' );
+		echo ': <a href="'.$dead_character['url'].'">'.$dead_character['name'].'</a> - '.date('F j, Y', $dead_character['died'] ).'</p>';
+
 	}
 
 	/**
