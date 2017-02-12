@@ -58,7 +58,7 @@ class Bury_Your_Queers {
 		if ( $years != 0 ) $since .= sprintf( _n( '%s year, ', '%s years, ', $years, 'bury-your-queers' ), $years );
 		if ( $months != 0 ) $since .= sprintf( _n( '%s month', '%s months', $months, 'bury-your-queers' ), $months );
 		$since .= ( $years != 0 )? ', ' : ' ';
-		$since .= ( $months != 0 )? __('and ') : '';
+		$since .= ( $months != 0 )? __('and ', 'bury-your-queers') : '';
 		if ( $days != 0 ) $since .= sprintf( _n( '%s day', '%s days', $days, 'bury-your-queers' ), $days );
 
 		$response['since'] = $since;
