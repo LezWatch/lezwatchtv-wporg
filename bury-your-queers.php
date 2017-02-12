@@ -10,16 +10,40 @@ Author URI: http://halfelf.org/
 */
 
 class Bury_Your_Queers {
+
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		add_action( 'widgets_init', array( $this, 'register_widget' ) );
+		add_action( 'widgets_init', array( $this, 'last_death_register_widget' ) );
 	}
 
-	public function register_widget() {
+	/**
+	 * Init
+	 */
+	public function init() {
+		add_shortcode( 'last-death', array( $this, 'last_death_shortcode') );
+	}
+
+	/**
+	 * Shortcode Of Last Death
+	 */
+	public function last_death_shortcode() {
+		echo $this->last_death();
+	}
+
+	/**
+	 * Shortcode Of Last Death
+	 */
+	public function last_death_register_widget() {
 		$this->widget = new BYQ_Last_Death_Widget();
 		register_widget( $this->widget );
 	}
 
-	public function last_death() {
+	/**
+	 * The code that genrates the last death
+	 */
+	public static function last_death() {
 		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/last-death/' );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
@@ -40,15 +64,24 @@ class Bury_Your_Queers {
 		$response['since'] = $since;
 
 		return $response;
-
 	}
 }
 new Bury_Your_Queers();
 
 class BYQ_Last_Death_Widget extends WP_Widget {
 
+	/**
+	 * Holds widget settings defaults, populated in constructor.
+	 *
+	 * @var array
+	 */
 	protected $defaults;
 
+	/**
+	 * Constructor.
+	 *
+	 * Set the default widget options and create widget.
+	 */
 	function __construct() {
 
 		$this->defaults = array(
@@ -67,6 +100,12 @@ class BYQ_Last_Death_Widget extends WP_Widget {
 		parent::__construct( 'lezwatch-dead-char', __( 'The Latest Dead', 'bury-your-queers' ), $widget_ops, $control_ops );
 	}
 
+	/**
+	 * Echo the widget content.
+	 *
+	 * @param array $args Display arguments
+	 * @param array $instance The settings for the particular instance of the widget
+	 */
 	function widget( $args, $instance ) {
 
 		extract( $args );
@@ -86,18 +125,32 @@ class BYQ_Last_Death_Widget extends WP_Widget {
 		echo $args['after_widget'];
 	}
 
+	/**
+	 * Update a particular instance.
+	 *
+	 * @param array $new_instance New settings for this instance as input by the user via form()
+	 * @param array $old_instance Old settings for this instance
+	 * @return array Settings to save or bool false to cancel saving
+	 */
 	function update( $new_instance, $old_instance ) {
 		$new_instance['title'] = strip_tags( $new_instance['title'] );
 		return $new_instance;
 	}
 
+	/**
+	 * Echo the settings update form.
+	 *
+	 * @param array $instance Current settings
+	 */
 	function form( $instance ) {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
+
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php __e( 'Title', 'bury-your-queers' ) ?> )</label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 		<?php
+
 	}
 }
