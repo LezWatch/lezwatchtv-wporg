@@ -90,7 +90,7 @@ class BYQ_Last_Death_Widget extends WP_Widget {
 	function __construct() {
 
 		$this->defaults = array(
-			'title'		=> __( 'The Most Recent Death', 'bury-your-queers' ),
+			'title'		=> __( 'Bury Your Queers', 'bury-your-queers' ),
 		);
 
 		$widget_ops = array(
@@ -102,7 +102,7 @@ class BYQ_Last_Death_Widget extends WP_Widget {
 			'id_base' => 'lezwatch-dead-char',
 		);
 
-		parent::__construct( 'lezwatch-dead-char', __( 'The Latest Dead', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'lezwatch-dead-char', __( 'Bury Your Queers', 'bury-your-queers' ), $widget_ops, $control_ops );
 	}
 
 	/**
