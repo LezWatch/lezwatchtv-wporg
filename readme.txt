@@ -10,9 +10,12 @@ Display the most recently killed queer female on TV, brought to you by LezWatchT
 
 == Description ==
 
-Being a queer female character on TV is more dangerous than being on the Titanic. Bury Your Queers by [LezWatchTV](https://lezwatchtv.com) allows you to have a widget displaying the time since the last queer death, with a link back to who died.
+Being a queer female character on TV is more dangerous than being on the Titanic. Bury Your Queers by [LezWatchTV](https://lezwatchtv.com) allows you to show solidarity with fictional queer deaths.
 
-In the future, the plan is to include an 'On this Day' widget that lists any characters who died on the same day in previous years.
+The data can be displayed via a widget or a shortcode:
+
+* the time since the last queer death and who it is
+* an 'on this day' display of who died on that day in previous years
 
 ==Changelog==
 
@@ -45,6 +48,10 @@ We do.
 = You're missing some shows/characters =
 
 Probably. The world is a big place. [Please drop us a line and let us know](https://lezwatchtv.com/suggestions-welcome/). We're always trying to make it better.
+
+= Why only female queers? =
+
+Because the site data is from LezWatchTV. If someone wants to make a similar site for male queers, we're happy to help them output their data so it can be used too.
 
 == Screenshots ==
 
