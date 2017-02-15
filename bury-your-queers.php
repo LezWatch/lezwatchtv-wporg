@@ -103,11 +103,12 @@ class Bury_Your_Queers {
 	/**
 	 * The code that generates the On This Day code
 	 */
-	public static function on_this_day( $this_day = '03-03' ) {
+	public static function on_this_day( $this_day = 'today' ) {
 		
-		$this_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
+		$echo_day = ( $this_day == 'today' )? time() : strtotime($this_day.'-2014');
+		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
 		
-		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/on-this-day/'.$this_day );
+		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/on-this-day/'.$json_day );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
@@ -126,7 +127,7 @@ class Bury_Your_Queers {
 			$the_dead .= '</ul>';
 		}
 
-		$onthisday = '<p>'. sprintf( __( 'On %s, %s', 'bury-your-queers'), date('M jS'), $how_many ).'</p>';
+		$onthisday = '<p>'. sprintf( __( 'On %s, %s', 'bury-your-queers'), date('F jS', $echo_day ), $how_many ).'</p>';
 		$return = $onthisday.$the_dead;
 
 		return $return;
@@ -260,10 +261,10 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 		);
 
 		$control_ops = array(
-			'id_base' => 'byq-dead-char',
+			'id_base' => 'byq-on-this-day',
 		);
 
-		parent::__construct( 'byq-dead-char', __( 'Bury Your Queers - On This Day', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'byq-on-this-day', __( 'Bury Your Queers - On This Day', 'bury-your-queers' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -283,7 +284,9 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 		
-		echo Bury_Your_Queers::on_this_day();
+		$date = ( ! empty( $instance['date'] ) )? $instance['date'] : 'today' ;
+		
+		echo Bury_Your_Queers::on_this_day( $date );
 
 		echo $args['after_widget'];
 	}
