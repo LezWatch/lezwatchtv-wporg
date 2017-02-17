@@ -23,6 +23,7 @@ class Bury_Your_Queers {
 		add_action( 'widgets_init', array( $this, 'last_death_register_widget' ) );
 		add_action( 'widgets_init', array( $this, 'on_this_day_register_widget' ) );
 		add_action( 'init', array( $this, 'init' ) );
+		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -31,6 +32,15 @@ class Bury_Your_Queers {
 	public function init() {
 		add_shortcode( 'last-death', array( $this, 'last_death_shortcode') );
 		add_shortcode( 'on-this-day', array( $this, 'on_this_day_shortcode') );
+	}
+
+	/**
+	 * Admin Scripts
+	 */
+	public function admin_enqueue_scripts($hook) {
+		if( $hook !== 'widget.php' ) return;
+		//wp_enqueue_script( 'custom-js', plugins_url( 'js/custom.js' , dirname(__FILE__) ) );
+		// This should be datepicker I guess...
 	}
 
 	/**
@@ -75,7 +85,8 @@ class Bury_Your_Queers {
 	}
 
 	/**
-	 * The code that generates the last death
+	 * The Last Death
+	 * Code that generates the last death
 	 */
 	public static function last_death() {
 		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/last-death/' );
@@ -101,13 +112,15 @@ class Bury_Your_Queers {
 	}
 
 	/**
-	 * The code that generates the On This Day code
+	 * On This Day
+	 * Code that generates the On This Day code
 	 */
-	public static function on_this_day( $this_day = '03-03' ) {
+	public static function on_this_day( $this_day = 'today' ) {
 		
-		$this_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
+		$echo_day = ( $this_day == 'today' )? time() : strtotime($this_day.'-2014');
+		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
 		
-		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/on-this-day/'.$this_day );
+		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/on-this-day/'.$json_day );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
@@ -126,7 +139,7 @@ class Bury_Your_Queers {
 			$the_dead .= '</ul>';
 		}
 
-		$onthisday = '<p>'. sprintf( __( 'On %s, %s', 'bury-your-queers'), date('M jS'), $how_many ).'</p>';
+		$onthisday = '<p>'. sprintf( __( 'On %s, %s', 'bury-your-queers'), date('F jS', $echo_day ), $how_many ).'</p>';
 		$return = $onthisday.$the_dead;
 
 		return $return;
@@ -146,8 +159,6 @@ class BYQ_Last_Death_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
-	 *
-	 * @var array
 	 */
 	protected $defaults;
 
@@ -238,8 +249,6 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
-	 *
-	 * @var array
 	 */
 	protected $defaults;
 
@@ -251,7 +260,8 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 	function __construct() {
 
 		$this->defaults = array(
-			'title'		=> __( 'Bury Your Queers - On This Day', 'bury-your-queers' ),
+			'title' => __( 'Bury Your Queers - On This Day', 'bury-your-queers' ),
+			'date'  => '',
 		);
 
 		$widget_ops = array(
@@ -260,10 +270,10 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 		);
 
 		$control_ops = array(
-			'id_base' => 'byq-dead-char',
+			'id_base' => 'byq-on-this-day',
 		);
 
-		parent::__construct( 'byq-dead-char', __( 'Bury Your Queers - On This Day', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'byq-on-this-day', __( 'Bury Your Queers - On This Day', 'bury-your-queers' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -283,7 +293,9 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 		
-		echo Bury_Your_Queers::on_this_day();
+		$date = ( ! empty( $instance['date'] ) )? $instance['date'] : 'today' ;
+		
+		echo Bury_Your_Queers::on_this_day( $date );
 
 		echo $args['after_widget'];
 	}
@@ -297,6 +309,7 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 	 */
 	function update( $new_instance, $old_instance ) {
 		$new_instance['title'] = strip_tags( $new_instance['title'] );
+		$new_instance['date']  = strip_tags( $new_instance['date'] );
 		return $new_instance;
 	}
 
@@ -311,6 +324,12 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php _e( 'Date (Optional)', 'bury-your-queers' ); ?>: </label>
+			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'date' ) ); ?>" value="<?php echo esc_attr( $instance['date'] ); ?>" class="widefat" />
+			<br><em><?php _e( 'If blank, the date will be the current day.', 'bury-your-queers' ); ?></em>
 		</p>
 		<?php
 	}
