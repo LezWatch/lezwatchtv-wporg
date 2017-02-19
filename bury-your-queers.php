@@ -87,7 +87,8 @@ class Bury_Your_Queers {
 			'date' => 'today',
 		], $atts);
 
-		$onthisday = $this->on_this_day( $attributes['date'] );
+		$this_day = sanitize_text_field($attributes['date']);
+		$onthisday = $this->on_this_day( $this_day );
 
 		return $onthisday;
 	}
@@ -140,6 +141,14 @@ class Bury_Your_Queers {
 	 * Code that generates the On This Day code
 	 */
 	public static function on_this_day( $this_day = 'today' ) {
+
+		$this_day = sanitize_text_field( $this_day );
+		if ( $this_day !== 'today' ) {
+			$month = substr( $this_day, 0, 2);
+			$day = substr( $this_day, 3, 2);
+			$this_day = ( checkdate ( $month, $day , date('Y') ) == true )? $this_day : 'today' ;
+		}
+
 		$echo_day = ( $this_day == 'today' )? time() : strtotime( date('Y').'-'.$this_day );
 		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
 
@@ -340,13 +349,13 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 	 * @return array Settings to save or bool false to cancel saving
 	 */
 	function update( $new_instance, $old_instance ) {
-		$new_instance['title'] = strip_tags( $new_instance['title'] );
+		$new_instance['title'] = wp_strip_all_tags( $new_instance['title'] );
 
 		$new_instance['date'] = substr( $new_instance['date'], 0, 5);
 		$month = substr( $new_instance['date'], 0, 2);
 		$day = substr( $new_instance['date'], 3, 2);
 		if ( checkdate( $month, $day, date("Y") ) == false ) $new_instance['date'] = '';
-		$new_instance['date']  = strip_tags( $new_instance['date'] );
+		$new_instance['date']  = wp_strip_all_tags( $new_instance['date'] );
 
 		return $new_instance;
 	}
@@ -369,8 +378,6 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'date' ) ); ?>" class="datepicker" value="<?php echo esc_attr( $instance['date'] ); ?>" class="widefat" />
 			<br><em><?php _e( 'If blank, the date will be the current day.', 'bury-your-queers' ); ?></em>
 		</p>
-
-
 		<?php
 	}
 }

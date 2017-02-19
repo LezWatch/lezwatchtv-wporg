@@ -24,6 +24,7 @@ The [terms of Use of LezWatch TV](https://lezwatchtv.com/tos/) allow free use of
 * Added Uninstall
 * Corrected date output for user-selected On This Day in Widget
 * Only call jquery on widgets pages
+* Extra sanitization and validation
 * Donate link
 
 = 1.0 =
