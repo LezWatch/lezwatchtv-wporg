@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: televison, widget, wlw, lezwatchtv
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 1.0
+Stable tag: 1.1
 Donate link: https://store.halfelf.org/donate/
 License: GPLv2 (or Later)
 
@@ -18,6 +18,13 @@ The data can be displayed via a widget or a shortcode.
 The [terms of Use of LezWatch TV](https://lezwatchtv.com/tos/) allow free use of the data, so yes, you can fork this.
 
 ==Changelog==
+
+= 1.1 =
+* March 2017 by Ipstenu
+* Added Uninstall
+* Corrected date output for user-selected On This Day in Widget
+* Only call jquery on widgets pages
+* Donate link
 
 = 1.0 =
 * February 2017 by Ipstenu

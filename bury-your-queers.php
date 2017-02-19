@@ -3,7 +3,7 @@
  Plugin Name: Bury Your Queers
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
- Version: 1.0
+ Version: 1.1
  Author: Mika Epstein
  Author URI: http://halfelf.org/
  License: GPLv2 (or Later)
@@ -44,9 +44,9 @@ class Bury_Your_Queers {
 		add_action( 'widgets_init', array( $this, 'last_death_register_widget' ) );
 		add_action( 'widgets_init', array( $this, 'on_this_day_register_widget' ) );
 		add_action( 'init', array( $this, 'init' ) );
-		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		$this->version = '1.0';
+		$this->version = '1.1';
 	}
 
 	/**
@@ -55,13 +55,14 @@ class Bury_Your_Queers {
 	public function init() {
 		add_shortcode( 'last-death', array( $this, 'last_death_shortcode') );
 		add_shortcode( 'on-this-day', array( $this, 'on_this_day_shortcode') );
+		add_filter( 'plugin_row_meta', array( $this, 'donate_link'), 10, 2 );
 	}
 
 	/**
 	 * Admin Scripts
 	 */
 	public function admin_enqueue_scripts($hook) {
-		//if( $hook !== 'widget.php' ) return;
+		if( $hook !== 'widgets.php' ) return;
 		wp_enqueue_script( 'byq-onthisday', plugins_url( 'js/otd-datepicker.js', __FILE__ ), array( 'jquery-ui-datepicker' ), $this->version, true );
 		wp_enqueue_style( 'jquery-ui', plugins_url( 'css/jquery-ui.css', __FILE__ ), array(), $this->version );
 	}
@@ -126,7 +127,7 @@ class Bury_Your_Queers {
 		if ( $years != 0 ) $since .= sprintf( _n( '%s year, ', '%s years, ', $years, 'bury-your-queers' ), $years );
 		if ( $months != 0 ) $since .= sprintf( _n( '%s month', '%s months', $months, 'bury-your-queers' ), $months );
 		$since .= ( $years != 0 )? ', ' : '';
-		$since .= ( $months != 0 )? __('and ', 'bury-your-queers') : '';
+		$since .= ( $months != 0 )? __(' and ', 'bury-your-queers') : '';
 		if ( $days != 0 ) $since .= sprintf( _n( '%s day', '%s days', $days, 'bury-your-queers' ), $days );
 
 		$response['since'] = $since;
@@ -139,8 +140,7 @@ class Bury_Your_Queers {
 	 * Code that generates the On This Day code
 	 */
 	public static function on_this_day( $this_day = 'today' ) {
-
-		$echo_day = ( $this_day == 'today' )? time() : strtotime($this_day.'-2014');
+		$echo_day = ( $this_day == 'today' )? time() : strtotime( date('Y').'-'.$this_day );
 		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
 
 		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/on-this-day/'.$json_day );
@@ -166,6 +166,15 @@ class Bury_Your_Queers {
 		$return = $onthisday.$the_dead;
 
 		return $return;
+	}
+
+	// donate link on manage plugin page
+	function donate_link( $links, $file ) {
+		if ($file == plugin_basename(__FILE__)) {
+    		$donate_link = '<a href="https://store.halfelf.org/donate/">' . __( 'Donate', 'bury-your-queers' ) . '</a>';
+    		$links[] = $donate_link;
+        }
+        return $links;
 	}
 
 }
