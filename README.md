@@ -9,4 +9,4 @@ The data can be displayed via a widget or a shortcode:
 
 ## Installation
 
-The plugin is available from WordPress.org's plugin directory. The github repository is for development.
+The plugin is available from [WordPress.org's plugin directory](https://wordpress.org/plugins/bury-your-queers). The github repository is for development.

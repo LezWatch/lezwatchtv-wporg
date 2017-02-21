@@ -4,11 +4,11 @@
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
  Version: 1.1
- Author: Mika Epstein
- Author URI: http://halfelf.org/
+ Author: LezWatch TV
+ Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
 
-	Copyright 2017 Mika Epstein (email: ipstenu@halfelf.org)
+	Copyright 2017 LezWatchTV (email: webmaster@lezwatchtv.com)
 
 	This file is part of Bury Your Queers, a plugin for WordPress.
 

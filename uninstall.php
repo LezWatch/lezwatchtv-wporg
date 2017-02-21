@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright 2017 Mika Epstein (email: ipstenu@halfelf.org)
+	Copyright 2017 LezWatchTV (email: webmaster@lezwatchtv.com)
 
 	This file is part of Bury Your Queers, a plugin for WordPress.
 
