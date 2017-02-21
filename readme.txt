@@ -19,6 +19,13 @@ The [terms of Use of LezWatch TV](https://lezwatchtv.com/tos/) allow free use of
 
 The data can be displayed via a widget or a shortcode.
 
+**Widgets**
+
+* **BYG - Last Death** 
+* **BYQ - On This Day**
+
+**Shortcodes**
+
 * `[lez-watch data="last-death"]`
 * `[lez-watch data="on-this-day"]`
 * `[lez-watch data="on-this-day" date-format="MM-DD"]`
@@ -43,7 +50,11 @@ If no date is passed to 'On This Day' it will default to today.
 
 == Installation ==
 
-No special instructions.
+1. Download the plugin .zip file and make note of where on your computer you downloaded it to.
+2. In the WordPress admin (yourdomain.com/wp-admin) go to Plugins > Add New or click the "Add New" button on the main plugins screen.
+3. On the following screen, click the "Upload Plugin" button.
+4. Browse your computer to where you downloaded the plugin .zip file, select it and click the "Install Now" button.
+5. After the plugin has successfully installed, click "Activate Plugin" and enjoy!
 
 == Frequently Asked Questions ==
 
