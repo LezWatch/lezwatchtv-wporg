@@ -69,7 +69,7 @@ class Bury_Your_Queers {
 	/**
 	 * Shortcode
 	 */
-	public function last_death_shortcode( $atts ) {
+	public function shortcode( $atts ) {
 		$attributes = shortcode_atts([
 			'data' 			=> 'last-death',
 			'date-format'	=> 'today',
@@ -126,8 +126,8 @@ class Bury_Your_Queers {
 
 		$response['since'] = $since;
 		
-		$return = sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$response['since'].'</strong>' );
-		$return .= ': <a href="'.$response['url'].'">'.$response['name'].'</a> - '.date('F j, Y', $response['died'] );
+		$return = '<p>'.sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$response['since'].'</strong>' );
+		$return .= ': <a href="'.$response['url'].'">'.$response['name'].'</a> - '.date('F j, Y', $response['died'] ).'</p>';
 
 		return $return;
 	}
