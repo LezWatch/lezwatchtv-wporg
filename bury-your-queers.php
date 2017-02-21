@@ -53,8 +53,7 @@ class Bury_Your_Queers {
 	 * Init
 	 */
 	public function init() {
-		add_shortcode( 'last-death', array( $this, 'last_death_shortcode') );
-		add_shortcode( 'on-this-day', array( $this, 'on_this_day_shortcode') );
+		add_shortcode( 'lez-watch', array( $this, 'shortcode') );
 		add_filter( 'plugin_row_meta', array( $this, 'donate_link'), 10, 2 );
 	}
 
@@ -68,29 +67,23 @@ class Bury_Your_Queers {
 	}
 
 	/**
-	 * Shortcode Of Last Death
+	 * Shortcode
 	 */
 	public function last_death_shortcode( $atts ) {
-		$dead_character = $this->last_death();
-
-		$return = '<p>'.sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$dead_character['since'].'</strong>' );
-		$return .= ': <a href="'.$dead_character['url'].'">'.$dead_character['name'].'</a> - '.date('F j, Y', $dead_character['died'] ).'</p>';
-
-		return $return;
-	}
-
-	/**
-	 * Shortcode Of On This Day
-	 */
-	public function on_this_day_shortcode( $atts = [] ) {
 		$attributes = shortcode_atts([
-			'date' => 'today',
+			'data' 			=> 'last-death',
+			'date-format'	=> 'today',
 		], $atts);
 
-		$this_day = sanitize_text_field($attributes['date']);
-		$onthisday = $this->on_this_day( $this_day );
-
-		return $onthisday;
+		$this_day = sanitize_text_field($attributes['date-format']);
+		
+		if ( $attributes['data'] == 'last-death' ) {
+			$return = $this->last_death();
+		} elseif ( $attributes['data'] == 'on-this-day' ) {
+			$return = $this->on_this_day( $this_day );
+		}
+		
+		return $return;
 	}
 
 	/**
@@ -113,7 +106,7 @@ class Bury_Your_Queers {
 	 * The Last Death
 	 * Code that generates the last death
 	 */
-	public static function last_death() {
+	public static function last_death( ) {
 		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/last-death/' );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
@@ -132,8 +125,11 @@ class Bury_Your_Queers {
 		if ( $days != 0 ) $since .= sprintf( _n( '%s day', '%s days', $days, 'bury-your-queers' ), $days );
 
 		$response['since'] = $since;
+		
+		$return = sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$response['since'].'</strong>' );
+		$return .= ': <a href="'.$response['url'].'">'.$response['name'].'</a> - '.date('F j, Y', $response['died'] );
 
-		return $response;
+		return $return;
 	}
 
 	/**
@@ -243,10 +239,7 @@ class BYQ_Last_Death_Widget extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 
-		$dead_character = Bury_Your_Queers::last_death();
-
-		echo sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$dead_character['since'].'</strong>' );
-		echo ': <a href="'.$dead_character['url'].'">'.$dead_character['name'].'</a> - '.date('F j, Y', $dead_character['died'] );
+		echo Bury_Your_Queers::last_death();
 
 		echo $args['after_widget'];
 	}

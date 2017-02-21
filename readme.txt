@@ -13,18 +13,28 @@ Display the most recently killed queer female on TV, brought to you by LezWatch 
 
 Being a queer female character on TV is more dangerous than being on the Titanic. Bury Your Queers, by [LezWatch TV](https://lezwatchtv.com), allows you to show solidarity with fictional queer deaths. By querying the data provided at [LezWatch TV](https://lezwatchtv.com), the plugin will display the latest queer female death or the names of those who died on the day in years past.
 
+The [terms of Use of LezWatch TV](https://lezwatchtv.com/tos/) allow free use of the data.
+
+= Usage =
+
 The data can be displayed via a widget or a shortcode.
 
-The [terms of Use of LezWatch TV](https://lezwatchtv.com/tos/) allow free use of the data, so yes, you can fork this.
+* `[lez-watch data="last-death"]`
+* `[lez-watch data="on-this-day"]`
+* `[lez-watch data="on-this-day" date-format="MM-DD"]`
+
+If no date is passed to 'On This Day' it will default to today.
 
 ==Changelog==
 
 = 1.1 =
-* March 2017 by Ipstenu
+* March 2017 by Ipstenu & liljimmi
 * Added Uninstall
 * Corrected date output for user-selected On This Day in Widget
 * Only call jquery on widgets pages
 * Extra sanitization and validation
+* Better shortcodes
+* Assets
 * Donate link
 
 = 1.0 =
