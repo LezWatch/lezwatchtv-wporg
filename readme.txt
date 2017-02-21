@@ -21,7 +21,7 @@ The data can be displayed via a widget or a shortcode.
 
 **Widgets**
 
-* **BYG - Last Death** 
+* **BYQ - Last Death** 
 * **BYQ - On This Day**
 
 **Shortcodes**
