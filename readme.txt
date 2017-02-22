@@ -7,7 +7,7 @@ Stable tag: 1.1
 Donate link: https://store.halfelf.org/donate/
 License: GPLv2 (or Later)
 
-Display the most recently killed queer female on TV, brought to you by LezWatch TV.
+Display TV's dead queer females, brought to you by LezWatch TV.
 
 == Description ==
 
