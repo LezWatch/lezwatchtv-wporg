@@ -35,7 +35,8 @@
  */
 class Bury_Your_Queers {
 
-	protected $version;
+	protected static $version;
+	protected static $apiurl;
 
 	/**
 	 * Constructor
@@ -46,7 +47,8 @@ class Bury_Your_Queers {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		$this->version = '1.1';
+		self::$version = '1.1';
+		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 	}
 
 	/**
@@ -63,7 +65,7 @@ class Bury_Your_Queers {
 	public function admin_enqueue_scripts($hook) {
 		if( $hook !== 'widgets.php' ) return;
 		wp_enqueue_script( 'byq-onthisday', plugins_url( 'js/otd-datepicker.js', __FILE__ ), array( 'jquery-ui-datepicker' ), $this->version, true );
-		wp_enqueue_style( 'jquery-ui', plugins_url( 'css/jquery-ui.css', __FILE__ ), array(), $this->version );
+		wp_enqueue_style( 'jquery-ui', plugins_url( 'css/jquery-ui.css', __FILE__ ), array(), self::$version );
 	}
 
 	/**
@@ -106,8 +108,8 @@ class Bury_Your_Queers {
 	 * The Last Death
 	 * Code that generates the last death
 	 */
-	public static function last_death( ) {
-		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/last-death/' );
+	public static function last_death() {
+		$request  = wp_remote_get( self::$apiurl . '/last-death/' );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
@@ -148,7 +150,7 @@ class Bury_Your_Queers {
 		$echo_day = ( $this_day == 'today' )? time() : strtotime( date('Y').'-'.$this_day );
 		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
 
-		$request  = wp_remote_get( 'https://lezwatchtv.com/wp-json/lwtv/v1/on-this-day/'.$json_day );
+		$request  = wp_remote_get( self::$apiurl . '/on-this-day/'.$json_day );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
