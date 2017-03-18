@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: televison, widget, wlw, lezwatchtv
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 1.1
+Stable tag: 1.1.1
 Donate link: https://store.halfelf.org/donate/
 License: GPLv2 (or Later)
 
@@ -21,7 +21,7 @@ The data can be displayed via a widget or a shortcode.
 
 **Widgets**
 
-* **BYQ - Last Death** 
+* **BYQ - Last Death**
 * **BYQ - On This Day**
 
 **Shortcodes**
@@ -33,6 +33,10 @@ The data can be displayed via a widget or a shortcode.
 If no date is passed to 'On This Day' it will default to today.
 
 ==Changelog==
+
+= 1.1.1 =
+* March 2017 by Ipstenu
+* Bugfix for warnings on PHP 7.1
 
 = 1.1 =
 * March 2017 by Ipstenu & liljimmi

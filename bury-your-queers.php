@@ -3,7 +3,7 @@
  Plugin Name: Bury Your Queers
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
- Version: 1.1
+ Version: 1.1.1
  Author: LezWatch TV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
@@ -47,7 +47,7 @@ class Bury_Your_Queers {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.1';
+		self::$version = '1.1.1';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 	}
 
@@ -64,7 +64,7 @@ class Bury_Your_Queers {
 	 */
 	public function admin_enqueue_scripts($hook) {
 		if( $hook !== 'widgets.php' ) return;
-		wp_enqueue_script( 'byq-onthisday', plugins_url( 'js/otd-datepicker.js', __FILE__ ), array( 'jquery-ui-datepicker' ), $this->version, true );
+		wp_enqueue_script( 'byq-onthisday', plugins_url( 'js/otd-datepicker.js', __FILE__ ), array( 'jquery-ui-datepicker' ), self::$version, true );
 		wp_enqueue_style( 'jquery-ui', plugins_url( 'css/jquery-ui.css', __FILE__ ), array(), self::$version );
 	}
 
@@ -78,13 +78,13 @@ class Bury_Your_Queers {
 		], $atts);
 
 		$this_day = sanitize_text_field($attributes['date-format']);
-		
+
 		if ( $attributes['data'] == 'last-death' ) {
 			$return = $this->last_death();
 		} elseif ( $attributes['data'] == 'on-this-day' ) {
 			$return = $this->on_this_day( $this_day );
 		}
-		
+
 		return $return;
 	}
 
@@ -127,7 +127,7 @@ class Bury_Your_Queers {
 		if ( $days != 0 ) $since .= sprintf( _n( '%s day', '%s days', $days, 'bury-your-queers' ), $days );
 
 		$response['since'] = $since;
-		
+
 		$return = '<p>'.sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$response['since'].'</strong>' );
 		$return .= ': <a href="'.$response['url'].'">'.$response['name'].'</a> - '.date('F j, Y', $response['died'] ).'</p>';
 
