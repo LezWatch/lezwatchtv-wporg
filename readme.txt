@@ -1,10 +1,9 @@
 === Bury Your Queers ===
 Contributors: Ipstenu, liljimmi
-Tags: televison, widget, wlw, lezwatchtv
+Tags: televison, widget, wlw, lezwatchtv, queer
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 1.1.1
-Donate link: https://store.halfelf.org/donate/
+Stable tag: 1.2
 License: GPLv2 (or Later)
 
 Display TV's dead queer females, brought to you by LezWatch TV.
@@ -33,6 +32,11 @@ The data can be displayed via a widget or a shortcode.
 If no date is passed to 'On This Day' it will default to today.
 
 ==Changelog==
+
+= 1.2 = 
+* April 2017 by Ipstenu
+* Trimming the fat with jquery
+* Switch to switch
 
 = 1.1.1 =
 * March 2017 by Ipstenu

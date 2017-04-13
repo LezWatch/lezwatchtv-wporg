@@ -3,7 +3,7 @@
  Plugin Name: Bury Your Queers
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
- Version: 1.1.1
+ Version: 1.2
  Author: LezWatch TV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
@@ -47,7 +47,7 @@ class Bury_Your_Queers {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.1.1';
+		self::$version = '1.2';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 	}
 
@@ -78,18 +78,25 @@ class Bury_Your_Queers {
 		], $atts);
 
 		$this_day = sanitize_text_field($attributes['date-format']);
+		
+		switch ( $attributes['data'] ) {
+			case 'last-death':
+				$return = $this->last_death();
+				break;
+			
+			case 'on-this-day':
+				$return = $this->on_this_day( $this_day );
+				break;
 
-		if ( $attributes['data'] == 'last-death' ) {
-			$return = $this->last_death();
-		} elseif ( $attributes['data'] == 'on-this-day' ) {
-			$return = $this->on_this_day( $this_day );
+			default: 
+				$return = '';
 		}
 
 		return $return;
 	}
 
 	/**
-	 * Widget Of Last Death
+	 * Widget - Last Death
 	 */
 	public function last_death_register_widget() {
 		$this->widget = new BYQ_Last_Death_Widget();
@@ -97,7 +104,7 @@ class Bury_Your_Queers {
 	}
 
 	/**
-	 * Widget Of On This Day
+	 * Widget - On This Day
 	 */
 	public function on_this_day_register_widget() {
 		$this->widget = new BYQ_On_This_Day_Widget();
@@ -371,7 +378,7 @@ class BYQ_On_This_Day_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php _e( 'Date (Optional)', 'bury-your-queers' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'date' ) ); ?>" class="datepicker" value="<?php echo esc_attr( $instance['date'] ); ?>" class="widefat" />
-			<br><em><?php _e( 'If blank, the date will be the current day.', 'bury-your-queers' ); ?></em>
+			<br><em><?php _e( 'If left blank, the date used will be the current day.', 'bury-your-queers' ); ?></em>
 		</p>
 		<?php
 	}
