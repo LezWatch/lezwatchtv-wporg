@@ -2,15 +2,19 @@
 Contributors: Ipstenu, liljimmi
 Tags: televison, widget, wlw, lezwatchtv, queer
 Requires at least: 4.6
-Tested up to: 4.7
-Stable tag: 1.2
+Tested up to: 4.8
+Stable tag: 1.2.0
 License: GPLv2 (or Later)
 
 Display TV's dead queer females, brought to you by LezWatch TV.
 
 == Description ==
 
-Being a queer female character on TV is more dangerous than being on the Titanic. Bury Your Queers, by [LezWatch TV](https://lezwatchtv.com), allows you to show solidarity with fictional queer deaths. By querying the data provided at [LezWatch TV](https://lezwatchtv.com), the plugin will display the latest queer female death or the names of those who died on the day in years past.
+Being a queer female character on TV is more dangerous than being on the Titanic. Bury Your Queers, by [LezWatch TV](https://lezwatchtv.com), allows you to show solidarity with fictional queer deaths. By querying the data provided at [LezWatch TV](https://lezwatchtv.com), the plugin will display information on the deaths of queer female TV characters.
+
+* **Last Death:** The latest death 
+* **On This Day:** The names of those who died on that day
+* **Statistics:** The percentage of characters who died and/or shows with death
 
 The [terms of Use of LezWatch TV](https://lezwatchtv.com/tos/) allow free use of the data.
 
@@ -22,21 +26,27 @@ The data can be displayed via a widget or a shortcode.
 
 * **BYQ - Last Death**
 * **BYQ - On This Day**
+* **BYQ - Statistics**
 
 **Shortcodes**
 
 * `[lez-watch data="last-death"]`
 * `[lez-watch data="on-this-day"]`
 * `[lez-watch data="on-this-day" date-format="MM-DD"]`
+* `[lez-watch data="stats"]`
+* `[lez-watch data="stats" stat-type={characters|shows}]`
 
 If no date is passed to 'On This Day' it will default to today.
 
+If no format type is passed to 'Stats' it will default to display both character and show stats.
+
 ==Changelog==
 
-= 1.2 = 
-* April 2017 by Ipstenu
-* Trimming the fat with jquery
-* Switch to switch
+= 1.2.0 = 
+* May 2017 by Ipstenu
+* Added: Statistics
+* Removed: Unused jquery code
+* Changed: Updated code to use switch
 
 = 1.1.1 =
 * March 2017 by Ipstenu

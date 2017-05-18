@@ -3,7 +3,7 @@
  Plugin Name: Bury Your Queers
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
- Version: 1.2
+ Version: 1.2.0
  Author: LezWatch TV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
@@ -42,12 +42,11 @@ class Bury_Your_Queers {
 	 * Constructor
 	 */
 	public function __construct() {
-		add_action( 'widgets_init', array( $this, 'last_death_register_widget' ) );
-		add_action( 'widgets_init', array( $this, 'on_this_day_register_widget' ) );
+		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.2';
+		self::$version = '1.2.0';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 	}
 
@@ -55,8 +54,8 @@ class Bury_Your_Queers {
 	 * Init
 	 */
 	public function init() {
-		add_shortcode( 'lez-watch', array( $this, 'shortcode') );
-		add_filter( 'plugin_row_meta', array( $this, 'donate_link'), 10, 2 );
+		add_shortcode( 'lez-watch', array( $this, 'shortcode' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'donate_link' ), 10, 2 );
 	}
 
 	/**
@@ -73,19 +72,25 @@ class Bury_Your_Queers {
 	 */
 	public function shortcode( $atts ) {
 		$attributes = shortcode_atts([
-			'data' 			=> 'last-death',
-			'date-format'	=> 'today',
+			'data'        => 'last-death',
+			'date-format' => 'today',
+			'stat-type'   => 'all',
 		], $atts);
 
-		$this_day = sanitize_text_field($attributes['date-format']);
+		$this_day = sanitize_text_field( $attributes[ 'date-format' ] );
+		$stat_fmt = sanitize_text_field( $attributes[ 'stat-type' ] );
 		
-		switch ( $attributes['data'] ) {
+		switch ( $attributes[ 'data' ] ) {
 			case 'last-death':
 				$return = $this->last_death();
 				break;
 			
 			case 'on-this-day':
 				$return = $this->on_this_day( $this_day );
+				break;
+
+			case 'stats':
+				$return = $this->statistics( $stat_fmt );
 				break;
 
 			default: 
@@ -96,19 +101,16 @@ class Bury_Your_Queers {
 	}
 
 	/**
-	 * Widget - Last Death
+	 * Register Widgets
 	 */
-	public function last_death_register_widget() {
-		$this->widget = new BYQ_Last_Death_Widget();
-		register_widget( $this->widget );
-	}
-
-	/**
-	 * Widget - On This Day
-	 */
-	public function on_this_day_register_widget() {
-		$this->widget = new BYQ_On_This_Day_Widget();
-		register_widget( $this->widget );
+	public function register_widgets() {
+		
+		$widgets = array( 'BYQ_Last_Death_Widget', 'BYQ_On_This_Day_Widget', 'BYQ_Statistics_Widget' );
+		
+		foreach ( $widgets as $widget ) {
+			$this->widget = new $widget();
+			register_widget( $this->widget );
+		}
 	}
 
 	/**
@@ -182,6 +184,50 @@ class Bury_Your_Queers {
 		return $return;
 	}
 
+	/**
+	 * Statistics
+	 * Code that generates the stats of death code
+	 */
+	public static function statistics( $format = 'all' ) {
+		$format = sanitize_text_field( $format );
+		
+		// Request Data
+		$request  = wp_remote_get( self::$apiurl . '/stats/death/' );
+		$response = wp_remote_retrieve_body( $request );
+		$response = json_decode($response, true);
+		
+		// The Math part
+		$live_chars    = $response[ 'characters' ][ 'alive' ];
+		$dead_chars    = $response[ 'characters' ][ 'dead' ];
+		$total_chars   = $live_chars + $dead_chars;
+		$percent_chars = number_format( ( $dead_chars / $total_chars ) * 100, 2 );
+		
+		$live_shows    = $response[ 'shows' ][ 'no-death' ];
+		$dead_shows    = $response[ 'shows' ][ 'death' ];
+		$total_shows   = $live_shows + $dead_shows;
+		$percent_shows = number_format( ( $dead_shows / $total_shows ) * 100, 2 );
+
+		$character_return = sprintf( __( 'There are %s dead characters out of %s.', 'bury-your-queers' ), $live_chars, $total_chars ) ;
+		$character_percent_return = sprintf( __( '%s%% of all queer females on TV are dead.', 'bury-your-queers' ), $percent_chars ) ;
+
+		$show_return = sprintf( __( 'There are %s shows with dead characters out of %s.', 'bury-your-queers' ), $dead_shows, $total_shows ) ;
+		$show_percent_return = sprintf( __( '%s%% of TV shows with any queer female have at least one dead.', 'bury-your-queers' ), $percent_shows ) ;
+		
+		switch ( $format ) {
+			case 'characters':
+				$return = $character_percent_return;
+				break;
+			
+			case 'shows':
+				$return = $show_percent_return;
+				break;
+			
+			default: 
+				$return = $character_percent_return . ' ' . $show_percent_return;
+		}
+		return '<p>' . $return . '</p>';
+	}
+
 	// donate link on manage plugin page
 	function donate_link( $links, $file ) {
 		if ($file == plugin_basename(__FILE__)) {
@@ -194,192 +240,5 @@ class Bury_Your_Queers {
 }
 new Bury_Your_Queers();
 
-/*
- * class BYQ_Last_Death_Widget
- *
- * Widget to display last queer death
- *
- * @since 1.0
- */
-class BYQ_Last_Death_Widget extends WP_Widget {
-
-	/**
-	 * Holds widget settings defaults, populated in constructor.
-	 */
-	protected $defaults;
-
-	/**
-	 * Constructor.
-	 *
-	 * Set the default widget options and create widget.
-	 */
-	function __construct() {
-
-		$this->defaults = array(
-			'title'		=> __( 'Last Queer Death', 'bury-your-queers' ),
-		);
-
-		$widget_ops = array(
-			'classname'   => 'dead-character deadwidget',
-			'description' => __( 'Displays time since the last WLW death', 'bury-your-queers' ),
-		);
-
-		$control_ops = array(
-			'id_base' => 'byq-dead-char',
-		);
-
-		parent::__construct( 'byq-dead-char', __( 'BYQ - Last Death', 'bury-your-queers' ), $widget_ops, $control_ops );
-	}
-
-	/**
-	 * Echo the widget content.
-	 *
-	 * @param array $args Display arguments
-	 * @param array $instance The settings for the particular instance of the widget
-	 */
-	function widget( $args, $instance ) {
-
-		extract( $args );
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
-
-		echo $args['before_widget'];
-
-		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
-		}
-
-		echo Bury_Your_Queers::last_death();
-
-		echo $args['after_widget'];
-	}
-
-	/**
-	 * Update a particular instance.
-	 *
-	 * @param array $new_instance New settings for this instance as input by the user via form()
-	 * @param array $old_instance Old settings for this instance
-	 * @return array Settings to save or bool false to cancel saving
-	 */
-	function update( $new_instance, $old_instance ) {
-		$new_instance['title'] = strip_tags( $new_instance['title'] );
-		return $new_instance;
-	}
-
-	/**
-	 * Echo the settings update form.
-	 *
-	 * @param array $instance Current settings
-	 */
-	function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
-			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
-		</p>
-		<?php
-	}
-}
-
-/*
- * class BYQ_On_This_Day_Widget
- *
- * Widget to display On This Day...
- *
- * @since 1.0
- */
-class BYQ_On_This_Day_Widget extends WP_Widget {
-
-	/**
-	 * Holds widget settings defaults, populated in constructor.
-	 */
-	protected $defaults;
-
-	/**
-	 * Constructor.
-	 *
-	 * Set the default widget options and create widget.
-	 */
-	function __construct() {
-
-		$this->defaults = array(
-			'title' => __( 'On This Day', 'bury-your-queers' ),
-			'date'  => '',
-		);
-
-		$widget_ops = array(
-			'classname'   => 'dead-on-this-day deadwidget',
-			'description' => __( 'Displays any WLW who died on this day in years past.', 'bury-your-queers' ),
-		);
-
-		$control_ops = array(
-			'id_base' => 'byq-on-this-day',
-		);
-
-		parent::__construct( 'byq-on-this-day', __( 'BYQ - On This Day', 'bury-your-queers' ), $widget_ops, $control_ops );
-	}
-
-	/**
-	 * Echo the widget content.
-	 *
-	 * @param array $args Display arguments
-	 * @param array $instance The settings for the particular instance of the widget
-	 */
-	function widget( $args, $instance ) {
-
-		extract( $args );
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
-
-		echo $args['before_widget'];
-
-		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
-		}
-
-		$date = ( ! empty( $instance['date'] ) )? $instance['date'] : 'today' ;
-
-		echo Bury_Your_Queers::on_this_day( $date );
-
-		echo $args['after_widget'];
-	}
-
-	/**
-	 * Update a particular instance.
-	 *
-	 * @param array $new_instance New settings for this instance as input by the user via form()
-	 * @param array $old_instance Old settings for this instance
-	 * @return array Settings to save or bool false to cancel saving
-	 */
-	function update( $new_instance, $old_instance ) {
-		$new_instance['title'] = wp_strip_all_tags( $new_instance['title'] );
-
-		$new_instance['date'] = substr( $new_instance['date'], 0, 5);
-		$month = substr( $new_instance['date'], 0, 2);
-		$day = substr( $new_instance['date'], 3, 2);
-		if ( checkdate( $month, $day, date("Y") ) == false ) $new_instance['date'] = '';
-		$new_instance['date']  = wp_strip_all_tags( $new_instance['date'] );
-
-		return $new_instance;
-	}
-
-	/**
-	 * Echo the settings update form.
-	 *
-	 * @param array $instance Current settings
-	 */
-	function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
-			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
-		</p>
-
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php _e( 'Date (Optional)', 'bury-your-queers' ); ?>: </label>
-			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'date' ) ); ?>" class="datepicker" value="<?php echo esc_attr( $instance['date'] ); ?>" class="widefat" />
-			<br><em><?php _e( 'If left blank, the date used will be the current day.', 'bury-your-queers' ); ?></em>
-		</p>
-		<?php
-	}
-}
+// Include Widgets
+include_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
