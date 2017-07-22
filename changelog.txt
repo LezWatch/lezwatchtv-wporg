@@ -1,0 +1,17 @@
+= 1.1.1 =
+* March 2017 by Ipstenu
+* Bugfix for warnings on PHP 7.1
+
+= 1.1 =
+* March 2017 by Ipstenu & liljimmi
+* Added Uninstall
+* Corrected date output for user-selected On This Day in Widget
+* Only call jquery on widgets pages
+* Extra sanitization and validation
+* Better shortcodes
+* Assets
+* Donate link
+
+= 1.0 =
+* February 2017 by Ipstenu
+* Initial release

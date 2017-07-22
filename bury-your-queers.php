@@ -3,7 +3,7 @@
  Plugin Name: Bury Your Queers
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
- Version: 1.2.0
+ Version: 1.2.1
  Author: LezWatch TV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
@@ -118,6 +118,9 @@ class Bury_Your_Queers {
 	 * Code that generates the last death
 	 */
 	public static function last_death() {
+		
+		if ( wp_remote_retrieve_response_code( self::$apiurl ) !== 400 ) return __( '<p>Bury Your Queers is temporarily offline, but will return soon.</p>', 'bury-your-queers'); 
+		
 		$request  = wp_remote_get( self::$apiurl . '/last-death/' );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);

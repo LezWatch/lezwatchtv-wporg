@@ -2,8 +2,8 @@
 Contributors: Ipstenu, liljimmi
 Tags: televison, widget, wlw, lezwatchtv, queer
 Requires at least: 4.6
-Tested up to: 4.8
-Stable tag: 1.2.0
+Tested up to: 4.9
+Stable tag: 1.2.1
 License: GPLv2 (or Later)
 
 Display TV's dead queer females, brought to you by LezWatch TV.
@@ -42,29 +42,15 @@ If no format type is passed to 'Stats' it will default to display both character
 
 ==Changelog==
 
+= 1.2.1 =
+* July 2017 by Ipstenu
+* Added: Graceful failure if the website is offline.
+
 = 1.2.0 = 
 * May 2017 by Ipstenu
 * Added: Statistics
 * Removed: Unused jquery code
 * Changed: Updated code to use switch
-
-= 1.1.1 =
-* March 2017 by Ipstenu
-* Bugfix for warnings on PHP 7.1
-
-= 1.1 =
-* March 2017 by Ipstenu & liljimmi
-* Added Uninstall
-* Corrected date output for user-selected On This Day in Widget
-* Only call jquery on widgets pages
-* Extra sanitization and validation
-* Better shortcodes
-* Assets
-* Donate link
-
-= 1.0 =
-* February 2017 by Ipstenu
-* Initial release
 
 == Installation ==
 
