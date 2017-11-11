@@ -2,7 +2,7 @@
 Contributors: Ipstenu, liljimmi
 Tags: televison, widget, wlw, lezwatchtv, queer
 Requires at least: 4.6
-Tested up to: 4.8
+Tested up to: 4.9
 Stable tag: 1.2.0
 License: GPLv2 (or Later)
 
