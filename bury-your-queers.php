@@ -234,7 +234,7 @@ class Bury_Your_Queers {
 	// donate link on manage plugin page
 	function donate_link( $links, $file ) {
 		if ($file == plugin_basename(__FILE__)) {
-    		$donate_link = '<a href="https://store.halfelf.org/donate/">' . __( 'Donate', 'bury-your-queers' ) . '</a>';
+    		$donate_link = '<a href="https://ko-fi.com/A236CENl/">' . __( 'Donate', 'bury-your-queers' ) . '</a>';
     		$links[] = $donate_link;
         }
         return $links;
