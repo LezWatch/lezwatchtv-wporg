@@ -3,7 +3,7 @@
  Plugin Name: Bury Your Queers
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
- Version: 1.2.1
+ Version: 1.2.2
  Author: LezWatch TV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
@@ -135,7 +135,7 @@ class Bury_Your_Queers {
 		if ( $years != 0 ) $since .= sprintf( _n( '%s year, ', '%s years, ', $years, 'bury-your-queers' ), $years );
 		if ( $months != 0 ) $since .= sprintf( _n( '%s month', '%s months', $months, 'bury-your-queers' ), $months );
 		$since .= ( $years != 0 )? ', ' : '';
-		$since .= ( $months != 0 )? __(' and ', 'bury-your-queers') : '';
+		$since .= ( $days != 0 && $months != 0 )? __(' and ', 'bury-your-queers') : '';
 		if ( $days != 0 ) $since .= sprintf( _n( '%s day', '%s days', $days, 'bury-your-queers' ), $days );
 
 		$response['since'] = $since;

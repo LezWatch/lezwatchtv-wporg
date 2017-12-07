@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: televison, widget, wlw, lezwatchtv, queer
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 (or Later)
 
 Display TV's dead queer females, brought to you by LezWatch TV.
@@ -41,6 +41,10 @@ If no date is passed to 'On This Day' it will default to today.
 If no format type is passed to 'Stats' it will default to display both character and show stats.
 
 ==Changelog==
+
+= 1.2.2 =
+* December 2017 by Ipstenu
+* Fixed: If it's only been a month, don't say 'and' - Grammar!
 
 = 1.2.1 =
 * July 2017 by Ipstenu
@@ -91,7 +95,7 @@ No! LezWatch TV records shows from the entire planet.
 
 = You're missing some shows/characters =
 
-We know. The world is a big place. [Please drop us a line and let us know](https://lezwatchtv.com/suggestions-welcome/). We're always trying to make it better.
+We know. The world is a big place. [Please drop us a line and let us know](https://lezwatchtv.com/about/contact/). We're always trying to make it better.
 
 = Why only female queers? =
 
