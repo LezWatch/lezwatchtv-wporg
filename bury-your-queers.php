@@ -46,7 +46,7 @@ class Bury_Your_Queers {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.2.0';
+		self::$version = '1.2.2';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 	}
 
@@ -119,9 +119,13 @@ class Bury_Your_Queers {
 	 */
 	public static function last_death() {
 		
-		if ( wp_remote_retrieve_response_code( self::$apiurl ) !== 400 ) return __( '<p>Bury Your Queers is temporarily offline, but will return soon.</p>', 'bury-your-queers'); 
-		
 		$request  = wp_remote_get( self::$apiurl . '/last-death/' );
+
+		// Make sure it's running before we do anything...
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
+			return __( '<p>Bury Your Queers is temporarily offline, but will return soon.</p>', 'bury-your-queers'); 
+		}
+		
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
@@ -234,10 +238,10 @@ class Bury_Your_Queers {
 	// donate link on manage plugin page
 	function donate_link( $links, $file ) {
 		if ($file == plugin_basename(__FILE__)) {
-    		$donate_link = '<a href="https://ko-fi.com/A236CENl/">' . __( 'Donate', 'bury-your-queers' ) . '</a>';
-    		$links[] = $donate_link;
-        }
-        return $links;
+			$donate_link = '<a href="https://ko-fi.com/A236CENl/">' . __( 'Donate', 'bury-your-queers' ) . '</a>';
+			$links[] = $donate_link;
+		}
+		return $links;
 	}
 
 }
