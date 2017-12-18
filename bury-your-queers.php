@@ -3,21 +3,21 @@
  Plugin Name: Bury Your Queers
  Plugin URI: http://lezwatchtv.com/cliche/dead/
  Description: Show solidarity with fictional dead female queers.
- Version: 1.2.2
- Author: LezWatch TV
+ Version: 1.3.0
+ Author: LezWatchTV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
 
-	Copyright 2017 LezWatchTV (email: webmaster@lezwatchtv.com)
+	Copyright 2017-18 LezWatchTV (email: webmaster@lezwatchtv.com)
 
-	This file is part of Bury Your Queers, a plugin for WordPress.
+	This file is part of LezWatchTV, a plugin for WordPress.
 
-	Bury Your Queers is free software: you can redistribute it and/or modify
+	LezWatchTV is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 2 of the License, or
 	(at your option) any later version.
 
-	Bury Your Queers is distributed in the hope that it will be useful,
+	LezWatchTV is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
@@ -27,13 +27,13 @@
 */
 
 /*
- * class Bury_Your_Queers
+ * class LezWatchTV
  *
  * Main class for plugin
  *
  * @since 1.0
  */
-class Bury_Your_Queers {
+class LezWatchTV {
 
 	protected static $version;
 	protected static $apiurl;
@@ -46,8 +46,11 @@ class Bury_Your_Queers {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.2.2';
+		self::$version = '1.3.0';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
+
+		if ( WP_DEBUG ) self::$apiurl  = 'http://lezwatchtv.local/wp-json/lwtv/v1';
+
 	}
 
 	/**
@@ -63,7 +66,7 @@ class Bury_Your_Queers {
 	 */
 	public function admin_enqueue_scripts($hook) {
 		if( $hook !== 'widgets.php' ) return;
-		wp_enqueue_script( 'byq-onthisday', plugins_url( 'js/otd-datepicker.js', __FILE__ ), array( 'jquery-ui-datepicker' ), self::$version, true );
+		wp_enqueue_script( 'lwtv-onthisday', plugins_url( 'js/otd-datepicker.js', __FILE__ ), array( 'jquery-ui-datepicker' ), self::$version, true );
 		wp_enqueue_style( 'jquery-ui', plugins_url( 'css/jquery-ui.css', __FILE__ ), array(), self::$version );
 	}
 
@@ -75,22 +78,32 @@ class Bury_Your_Queers {
 			'data'        => 'last-death',
 			'date-format' => 'today',
 			'stat-type'   => 'all',
+			'otd-type'    => 'character',
 		], $atts);
 
 		$this_day = sanitize_text_field( $attributes[ 'date-format' ] );
 		$stat_fmt = sanitize_text_field( $attributes[ 'stat-type' ] );
+		$otd_type = sanitize_text_field( $attributes[ 'otd-type' ] );
 		
 		switch ( $attributes[ 'data' ] ) {
 			case 'last-death':
 				$return = $this->last_death();
 				break;
-			
+
+			case 'of-the-day':
+				$return = $this->of_the_day( $otd_type );
+				break;
+
 			case 'on-this-day':
 				$return = $this->on_this_day( $this_day );
 				break;
 
 			case 'stats':
 				$return = $this->statistics( $stat_fmt );
+				break;
+
+			case 'this-year':
+				$return = $this->this_year( $this_day );
 				break;
 
 			default: 
@@ -105,7 +118,7 @@ class Bury_Your_Queers {
 	 */
 	public function register_widgets() {
 		
-		$widgets = array( 'BYQ_Last_Death_Widget', 'BYQ_On_This_Day_Widget', 'BYQ_Statistics_Widget' );
+		$widgets = array( 'LWTV_Last_Death_Widget', 'LWTV_On_This_Day_Widget', 'LWTV_Statistics_Widget' );
 		
 		foreach ( $widgets as $widget ) {
 			$this->widget = new $widget();
@@ -154,6 +167,38 @@ class Bury_Your_Queers {
 	 * On This Day
 	 * Code that generates the On This Day code
 	 */
+	public static function of_the_day( $type = 'character' ) {
+
+		// Quick Failsafe
+		$valid_types = array( 'character', 'show', 'death' );
+		if ( !in_array( $type, $valid_types ) ) {
+			$type = 'character';
+		}
+
+		$request  = wp_remote_get( self::$apiurl . '/of-the-day/' . $type );
+		$response = wp_remote_retrieve_body( $request );
+		$response = json_decode( $response, true );
+
+		switch ( $type ) {
+			case 'death':
+				$image   = '';
+				$content = 'TBD';
+				break;
+			default:
+				$image   = '<div class="lwtv-of-the-day"><a href="' .  $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'thumbnail_size_w' ) .'"></a></div>';
+				$content = '<a href="' .  $response['url'] . '">' . $response['name'] . '</a>';
+		}
+
+		$return = $image . $content;
+
+		return $return;
+
+	}
+
+	/**
+	 * On This Day
+	 * Code that generates the On This Day code
+	 */
 	public static function on_this_day( $this_day = 'today' ) {
 
 		$this_day = sanitize_text_field( $this_day );
@@ -166,7 +211,7 @@ class Bury_Your_Queers {
 		$echo_day = ( $this_day == 'today' )? time() : strtotime( date('Y').'-'.$this_day );
 		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
 
-		$request  = wp_remote_get( self::$apiurl . '/on-this-day/'.$json_day );
+		$request  = wp_remote_get( self::$apiurl . '/on-this-day/' . $json_day );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
@@ -245,7 +290,7 @@ class Bury_Your_Queers {
 	}
 
 }
-new Bury_Your_Queers();
+new LezWatchTV();
 
 // Include Widgets
 include_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );

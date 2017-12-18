@@ -1,11 +1,6 @@
-# Bury Your Queers
+# LezWatchTV
 
-Being a queer female character on TV is more dangerous than being on the Titanic. Bury Your Queers by [LezWatchTV](https://lezwatchtv.com) allows you to show solidarity with fictional queer deaths.
-
-The data can be displayed via a widget or a shortcode:
-
-* the time since the last queer death and who it is
-* an 'on this day' display of who died on that day in previous years
+LezWatchTV catalogs and documents queer female and trans characters, as well as their shows from TV, web and streaming media. With that data, statistics are calculated on the state of international queer story representation. We provide easy and free access to finding the best shows with queer characters and stories in the genres fans want to see. We can help you keep up to date with the global happenings of queer representation on television.
 
 ## Installation
 
