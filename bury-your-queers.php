@@ -118,7 +118,7 @@ class LezWatchTV {
 	 */
 	public function register_widgets() {
 		
-		$widgets = array( 'LWTV_Last_Death_Widget', 'LWTV_On_This_Day_Widget', 'LWTV_Statistics_Widget' );
+		$widgets = array( 'LWTV_Last_Death_Widget', 'LWTV_Of_The_Day_Widget', 'LWTV_On_This_Day_Widget', 'LWTV_Statistics_Widget' );
 		
 		foreach ( $widgets as $widget ) {
 			$this->widget = new $widget();
@@ -185,11 +185,11 @@ class LezWatchTV {
 				$content = 'TBD';
 				break;
 			default:
-				$image   = '<div class="lwtv-of-the-day"><a href="' .  $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'thumbnail_size_w' ) .'"></a></div>';
+				$image   = '<a href="' .  $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'medium_size_w' ) .'"></a>';
 				$content = '<a href="' .  $response['url'] . '">' . $response['name'] . '</a>';
 		}
 
-		$return = $image . $content;
+		$return = '<div class="lwtv-of-the-day">' . $image . $content . '</div>';
 
 		return $return;
 
