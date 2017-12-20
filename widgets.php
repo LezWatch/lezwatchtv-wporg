@@ -123,6 +123,7 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 	 * Holds widget settings defaults, populated in constructor.
 	 */
 	protected $defaults;
+	protected $valid_types;
 
 	/**
 	 * Constructor.
@@ -131,10 +132,11 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 	 */
 	function __construct() {
 
-		$this->defaults = array(
+		$this->defaults   = array(
 			'title' => __( 'Of The Day', 'bury-your-queers' ),
 			'type'  => 'character',
 		);
+		$this->valid_types = array( 'character', 'show', 'death' );
 
 		$widget_ops = array(
 			'classname'   => 'lwtv-of-the-day otdwidget',
@@ -182,8 +184,7 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$new_instance['title'] = wp_strip_all_tags( $new_instance['title'] );
 
-		$valid_types = array( 'character', 'show', 'death' );
-		if ( !in_array( $new_instance['type'], $valid_types ) ) {
+		if ( !in_array( $new_instance['type'], $this->valid_types ) ) {
 			$new_instance['type'] = 'character';
 		}
 		$new_instance['type'] = sanitize_html_class( $new_instance['type'], 'character' );
@@ -197,8 +198,7 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 	 * @param array $instance Current settings
 	 */
 	function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
-		$valid_types = array( 'character', 'show', 'death' );
+		$instance    = wp_parse_args( (array) $instance, $this->defaults );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
@@ -207,12 +207,11 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php _e( 'Type', 'bury-your-queers' ); ?>: </label>
-			<select id="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'type' ) ); ?>" class="widefat" />
-				<?php foreach( $valid_types as $type ) { ?>
-					<option <?php selected( $instance['type'], $type ); ?> value="<?php echo $type; ?>"><?php echo ucfirst( $type ) ; ?></option>
+			<select id="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'type' ) ); ?>" class="widefat">
+				<?php foreach( $this->valid_types as $type ) { ?>
+					<option <?php selected( $instance['type'], $type ); ?> value="<?php echo $type; ?>"><?php echo ucfirst( $type ); ?></option>
 				<?php } ?>
 			</select>
-			<br><em><?php _e( 'If left blank, the character of the day will be shown.', 'bury-your-queers' ); ?></em>
 		</p>
 		<?php
 	}

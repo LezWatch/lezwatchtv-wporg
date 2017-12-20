@@ -1,8 +1,8 @@
 <?php
 /**
- Plugin Name: Bury Your Queers
- Plugin URI: http://lezwatchtv.com/cliche/dead/
- Description: Show solidarity with fictional dead female queers.
+ Plugin Name: LezWatchTV
+ Plugin URI: https://lezwatchtv.com/about/resources/
+ Description: Display information on queer female and trans representation on TV. Brought to you by LezWatchTV.
  Version: 1.3.0
  Author: LezWatchTV
  Author URI: https://lezwatchtv.com/
@@ -182,17 +182,16 @@ class LezWatchTV {
 		switch ( $type ) {
 			case 'death':
 				$image   = '';
-				$content = 'TBD';
+				$content = self::on_this_day( 'today' );
 				break;
 			default:
-				$image   = '<a href="' .  $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'medium_size_w' ) .'"></a>';
+				$image   = '<a href="' .  $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'medium_size_w' ) .'"></a><br />';
 				$content = '<a href="' .  $response['url'] . '">' . $response['name'] . '</a>';
 		}
 
 		$return = '<div class="lwtv-of-the-day">' . $image . $content . '</div>';
 
 		return $return;
-
 	}
 
 	/**
@@ -278,6 +277,37 @@ class LezWatchTV {
 				$return = $character_percent_return . ' ' . $show_percent_return;
 		}
 		return '<p>' . $return . '</p>';
+	}
+
+	function this_year( $year = false ) {
+		
+		// If the year isn't valid, we default to this year
+		$year = ( !$year || !preg_match( '/^[0-9]{4}$/', $year ) )? date( 'Y' ) : $year;
+
+		// Get the data
+		$this_year_array = wp_remote_get( self::$apiurl . '/what-happened/' . $year );
+
+		// If we got an error, bail
+		if ( array_key_exists( 'success', $this_year_array ) && !$this_year_array['success'] ) {
+			return 'There were no queer female or trans characters on TV prior to ' . $this_year_array['data'] . '.';
+		}
+
+		// Posts etc made:
+		$characters = ( $this_year_array['characters'] == 0 )? 'no characters' : sprintf( _n( '%s character', '%s characters', $this_year_array['characters'] ), $this_year_array['characters'] );
+		$shows      = ( $this_year_array['shows'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['shows'] ), $this_year_array['shows'] );
+		$posts      = ( $this_year_array['posts'] == 0 )? 'no posts' : sprintf( _n( '%s post', '%s posts', $this_year_array['posts'] ), $this_year_array['posts'] );
+
+		// This Year On Air information:
+		$on_air  = ( $this_year_array['on_air']['current'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['on_air']['current'] ), $this_year_array['on_air']['current'] );
+		$started = ( $this_year_array['on_air']['started'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['on_air']['started'] ), $this_year_array['on_air']['started'] );
+		$ended   = ( $this_year_array['on_air']['ended'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['on_air']['ended'] ), $this_year_array['on_air']['ended'] );
+
+		// Death
+		$death_this_year = ( $this_year_array['dead_year'] == 0 )? 'no characters died' : sprintf( _n( '%s character died', '%s characters died', $this_year_array['dead_year'] ), $this_year_array['dead_year'] );
+
+		$return = 'In ' . $year . ', there were ' . $on_air . ' with queer female or trans characters on the air. '  . $started . ' started and '  . $ended . ' ended, while .' . $death_this_year . '.';
+
+		return $return;
 	}
 
 	// donate link on manage plugin page
