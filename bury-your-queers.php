@@ -36,7 +36,7 @@
 class LezWatchTV {
 
 	protected static $version;
-	protected static $apiurl;
+	public static $apiurl;
 
 	/**
 	 * Constructor

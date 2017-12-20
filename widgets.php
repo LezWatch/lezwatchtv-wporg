@@ -412,15 +412,14 @@ class LWTV_Statistics_Widget extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php _e( 'Type (Optional)', 'bury-your-queers' ); ?>: </label>
-			
+			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php _e( 'Type', 'bury-your-queers' ); ?>: </label>
+
 		<select id="<?php echo $this->get_field_id( 'type' ); ?>" name="<?php echo $this->get_field_name( 'type' ); ?>" class="widefat" style="width:100%;">
 			<option value="" selected>All</option>
 			<?php foreach( $stat_types as $type) { ?>
 				<option <?php selected( $instance[ 'type' ], $type ); ?> value="<?php echo $type; ?>"><?php echo ucfirst( $type ); ?></option>
-			<?php } ?>      
-		</select>			
-			<br><em><?php _e( 'If left blank, the widget will display percentages for both TV shows and characters.', 'bury-your-queers' ); ?></em>
+			<?php } ?>
+		</select>
 		</p>
 		<?php
 	}
@@ -497,20 +496,7 @@ class LWTV_This_Year_Widget extends WP_Widget {
 	 */
 	function update( $new_instance, $old_instance ) {
 		$new_instance['title'] = wp_strip_all_tags( $new_instance['title'] );
-
-		// Get the first year
-		$request  = wp_remote_get( self::$apiurl . '/stats/first-year/' );
-		$response = wp_remote_retrieve_body( $request );
-		$response = json_decode($response, true);
-		
-		// Take the first year and go from there to NOW as a dropdown!
-
-		$new_instance['year'] = substr( $new_instance['date'], 0, 5);
-		$month = substr( $new_instance['date'], 0, 2);
-		$day = substr( $new_instance['date'], 3, 2);
-		if ( checkdate( $month, $day, date( 'Y' ) ) == false ) $new_instance['date'] = '';
-		$new_instance['date']  = wp_strip_all_tags( $new_instance['date'] );
-
+		$new_instance['year'] = ( preg_match( '/^[0-9]{4}$/', $new_instance['year'] ) )? $new_instance['year'] : date( 'Y' );
 		return $new_instance;
 	}
 
@@ -521,15 +507,23 @@ class LWTV_This_Year_Widget extends WP_Widget {
 	 */
 	function form( $instance ) {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
+
+		// Get the first year
+		$request  = wp_remote_get( LezWatchTV::$apiurl . '/stats/first-year/' );
+		$response = wp_remote_retrieve_body( $request );
+		$response = json_decode($response, true);
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
-
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php _e( 'Date (Optional)', 'bury-your-queers' ); ?>: </label>
-			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'date' ) ); ?>" class="datepicker" value="<?php echo esc_attr( $instance['date'] ); ?>" class="widefat" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php _e( 'Year', 'bury-your-queers' ); ?>: </label>
+			<select id="<?php echo $this->get_field_id( 'year' ); ?>" name="<?php echo $this->get_field_name( 'year' ); ?>" class="widefat" style="width:100%;">
+				<?php for( $year = $response['first']; $year <= date( 'Y' ); ++$year ) {
+					echo '<option ' . selected( $instance[ 'year' ], $year ) .' value="' . $year . '">' . $year . '</option>';
+				} ?>
+			</select>
 		</p>
 		<?php
 	}
