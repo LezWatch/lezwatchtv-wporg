@@ -425,3 +425,112 @@ class LWTV_Statistics_Widget extends WP_Widget {
 		<?php
 	}
 }
+
+/*
+ * class LWTV_This_Year_Widget
+ *
+ * Widget to display This Year data
+ *
+ * @since 1.0
+ */
+class LWTV_This_Year_Widget extends WP_Widget {
+
+	/**
+	 * Holds widget settings defaults, populated in constructor.
+	 */
+	protected $defaults;
+
+	/**
+	 * Constructor.
+	 *
+	 * Set the default widget options and create widget.
+	 */
+	function __construct() {
+
+		$this->defaults = array(
+			'title' => __( 'In This Year', 'bury-your-queers' ),
+			'year'  => date( 'Y' ),
+		);
+
+		$widget_ops = array(
+			'classname'   => 'in-this-year thisyearwidget',
+			'description' => __( 'Displays a review of queer female and trans representation on TV for a given year.', 'bury-your-queers' ),
+		);
+
+		$control_ops = array(
+			'id_base' => 'byq-in-this-year',
+		);
+
+		parent::__construct( 'byq-in-this-year', __( 'LWTV - In This Year', 'bury-your-queers' ), $widget_ops, $control_ops );
+	}
+
+	/**
+	 * Echo the widget content.
+	 *
+	 * @param array $args Display arguments
+	 * @param array $instance The settings for the particular instance of the widget
+	 */
+	function widget( $args, $instance ) {
+
+		extract( $args );
+		$instance = wp_parse_args( (array) $instance, $this->defaults );
+
+		echo $args['before_widget'];
+
+		if ( ! empty( $instance['title'] ) ) {
+			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+		}
+
+		$year = ( ! empty( $instance['year'] ) )? $instance['year'] : date( 'Y' ) ;
+
+		echo LezWatchTV::this_year( $year );
+
+		echo $args['after_widget'];
+	}
+
+	/**
+	 * Update a particular instance.
+	 *
+	 * @param array $new_instance New settings for this instance as input by the user via form()
+	 * @param array $old_instance Old settings for this instance
+	 * @return array Settings to save or bool false to cancel saving
+	 */
+	function update( $new_instance, $old_instance ) {
+		$new_instance['title'] = wp_strip_all_tags( $new_instance['title'] );
+
+		// Get the first year
+		$request  = wp_remote_get( self::$apiurl . '/stats/first-year/' );
+		$response = wp_remote_retrieve_body( $request );
+		$response = json_decode($response, true);
+		
+		// Take the first year and go from there to NOW as a dropdown!
+
+		$new_instance['year'] = substr( $new_instance['date'], 0, 5);
+		$month = substr( $new_instance['date'], 0, 2);
+		$day = substr( $new_instance['date'], 3, 2);
+		if ( checkdate( $month, $day, date( 'Y' ) ) == false ) $new_instance['date'] = '';
+		$new_instance['date']  = wp_strip_all_tags( $new_instance['date'] );
+
+		return $new_instance;
+	}
+
+	/**
+	 * Echo the settings update form.
+	 *
+	 * @param array $instance Current settings
+	 */
+	function form( $instance ) {
+		$instance = wp_parse_args( (array) $instance, $this->defaults );
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
+			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php _e( 'Date (Optional)', 'bury-your-queers' ); ?>: </label>
+			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'date' ) ); ?>" class="datepicker" value="<?php echo esc_attr( $instance['date'] ); ?>" class="widefat" />
+		</p>
+		<?php
+	}
+}

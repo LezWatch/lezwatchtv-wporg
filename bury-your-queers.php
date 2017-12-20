@@ -75,7 +75,7 @@ class LezWatchTV {
 	 */
 	public function shortcode( $atts ) {
 		$attributes = shortcode_atts([
-			'data'        => 'last-death',
+			'data'        => 'of-the-day',
 			'date-format' => 'today',
 			'stat-type'   => 'all',
 			'otd-type'    => 'character',
@@ -118,7 +118,7 @@ class LezWatchTV {
 	 */
 	public function register_widgets() {
 		
-		$widgets = array( 'LWTV_Last_Death_Widget', 'LWTV_Of_The_Day_Widget', 'LWTV_On_This_Day_Widget', 'LWTV_Statistics_Widget' );
+		$widgets = array( 'LWTV_Last_Death_Widget', 'LWTV_Of_The_Day_Widget', 'LWTV_On_This_Day_Widget', 'LWTV_Statistics_Widget', 'LWTV_This_Year_Widget' );
 		
 		foreach ( $widgets as $widget ) {
 			$this->widget = new $widget();
@@ -219,7 +219,7 @@ class LezWatchTV {
 		$the_dead = '';
 
 		if ( $count > 0 ) {
-			$how_many = sprintf( _n( '%s character died:', '%s queer female characters died:', $count, 'bury-your-queers' ), $count );
+			$how_many = sprintf( _n( '%s character died:', '%s characters died:', $count, 'bury-your-queers' ), $count );
 
 			$the_dead = '<ul class="byq-otd">';
 
@@ -279,33 +279,45 @@ class LezWatchTV {
 		return '<p>' . $return . '</p>';
 	}
 
+
+	/**
+	 * this_year function.
+	 * 
+	 * @access public
+	 * @param bool $year (default: false)
+	 * @return void
+	 */
 	function this_year( $year = false ) {
 		
 		// If the year isn't valid, we default to this year
 		$year = ( !$year || !preg_match( '/^[0-9]{4}$/', $year ) )? date( 'Y' ) : $year;
 
 		// Get the data
-		$this_year_array = wp_remote_get( self::$apiurl . '/what-happened/' . $year );
+		$request  = wp_remote_get( self::$apiurl . '/what-happened/' . $year );
+		$response = wp_remote_retrieve_body( $request );
+		$response = json_decode($response, true);
 
 		// If we got an error, bail
-		if ( array_key_exists( 'success', $this_year_array ) && !$this_year_array['success'] ) {
-			return 'There were no queer female or trans characters on TV prior to ' . $this_year_array['data'] . '.';
+		if ( array_key_exists( 'success', $response ) && !$response['success'] ) {
+			$fail = sprintf( __( 'There were no queer female or trans characters on TV prior to %s.', 'bury-your-queers' ), $response['data'] );
+			return $fail;
 		}
 
 		// Posts etc made:
-		$characters = ( $this_year_array['characters'] == 0 )? 'no characters' : sprintf( _n( '%s character', '%s characters', $this_year_array['characters'] ), $this_year_array['characters'] );
-		$shows      = ( $this_year_array['shows'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['shows'] ), $this_year_array['shows'] );
-		$posts      = ( $this_year_array['posts'] == 0 )? 'no posts' : sprintf( _n( '%s post', '%s posts', $this_year_array['posts'] ), $this_year_array['posts'] );
+		$characters = ( $response['characters'] == 0 )? __( 'no characters', 'bury-your-queers' ) : sprintf( _n( '%s character', '%s characters', $response['characters'], 'bury-your-queers' ), $response['characters'] );
+		$shows      = ( $response['shows'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $response['shows'], 'bury-your-queers' ), $response['shows'] );
+		$posts      = ( $response['posts'] == 0 )? 'no posts' : sprintf( _n( '%s post', '%s posts', $response['posts'], 'bury-your-queers' ), $response['posts'] );
 
 		// This Year On Air information:
-		$on_air  = ( $this_year_array['on_air']['current'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['on_air']['current'] ), $this_year_array['on_air']['current'] );
-		$started = ( $this_year_array['on_air']['started'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['on_air']['started'] ), $this_year_array['on_air']['started'] );
-		$ended   = ( $this_year_array['on_air']['ended'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $this_year_array['on_air']['ended'] ), $this_year_array['on_air']['ended'] );
+		$on_air  = ( $response['on_air']['current'] == 0 )? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( '%s show', '%s shows', $response['on_air']['current'], 'bury-your-queers' ), $response['on_air']['current'] );
+		$started = ( $response['on_air']['started'] == 0 )? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( 'Only %s show', 'A total of %s shows', $response['on_air']['started'], 'bury-your-queers' ), $response['on_air']['started'] );
+		$ended   = ( $response['on_air']['ended'] == 0 )? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( 'only %s show', '%s shows', $response['on_air']['ended'], 'bury-your-queers' ), $response['on_air']['ended'] );
 
 		// Death
-		$death_this_year = ( $this_year_array['dead_year'] == 0 )? 'no characters died' : sprintf( _n( '%s character died', '%s characters died', $this_year_array['dead_year'] ), $this_year_array['dead_year'] );
+		$death_this_year = ( $response['dead_year'] == 0 )? __( 'Amazingly no characters died', 'bury-your-queers' ) : sprintf( _n( 'Only %s character died', 'Sadly, %s characters died', $response['dead_year'], 'bury-your-queers' ), $response['dead_year'] );
 
-		$return = 'In ' . $year . ', there were ' . $on_air . ' with queer female or trans characters on the air. '  . $started . ' started and '  . $ended . ' ended, while .' . $death_this_year . '.';
+		// The Output
+		$return = sprintf( __( 'In %s, there were %s with queer female or trans characters on the air. %s started and %s ended that year. %s.', 'bury-your-queers' ), $year, $on_air, $started, $ended, $death_this_year );
 
 		return $return;
 	}
