@@ -1,6 +1,6 @@
 === LezWatchTV News and Information ===
 Contributors: Ipstenu, liljimmi
-Tags: televison, queer, lesbian, tv, bury your queers
+Tags: television, queer, lesbian, tv, bury your queers
 Requires at least: 4.6
 Tested up to: 4.9
 Stable tag: 1.3.0
