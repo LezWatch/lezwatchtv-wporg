@@ -1,16 +1,16 @@
-=== LezWatchTV ===
+=== LezWatchTV News and Information ===
 Contributors: Ipstenu, liljimmi
 Tags: televison, queer, lesbian, tv, bury your queers
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.3
+Stable tag: 1.3.0
 License: GPLv2 (or Later)
 
 Display information on queer female and trans representation on TV. Brought to you by LezWatchTV.
 
 == Description ==
 
-LezWatchTV catalogs and documents queer female and trans characters, as well as their shows from TV, web and streaming media. With that data, statistics are calculated on the state of international queer story representation. We provide easy and free access to finding the best shows with queer characters and stories in the genres fans want to see. We can help you keep up to date with the global happenings of queer representation on television.
+[LezWatchTV](https://lezwatchtv.com/) catalogs and documents queer female, transgender, and non-binary characters, as well as their shows from TV, web and streaming media. With that data, statistics are calculated on the state of international queer story representation. We provide easy and free access to finding the best shows with queer characters and stories in the genres fans want to see. We can help you keep up to date with the global happenings of queer representation on television.
 
 Currently we provide the following information about queer female or trans characters on television:
 
@@ -56,10 +56,6 @@ Notes:
 
 Data is pulled from [LezWatchTV](https://lezwatchtv.com).
 
-= What information from my site is tracked? =
-
-Nothing. We could get the domains of everyone who uses it, but that's about it. It's a read-only tool.
-
 = How accurate is the data? =
 
 As accurate as humanly possible. LezWatchTV is a hobby site and we curate the content by hand.
@@ -78,11 +74,23 @@ We know. The world is a big place. [Please drop us a line and let us know](https
 
 = Why only female queers? =
 
-Because the site data is from LezWatchTV. If someone wants to make a similar site for male queers, we're happy to help them output their data so it can be used too.
+Because the site data is from LezWatchTV and that's what we specialize in. If someone wants to make a similar site for male queers, we're happy to help them output their data so it can be used too.
 
 = Why "Bury Your Queers"? = 
 
-Because being a queer female character on TV is more dangerous than being on the Titanic.
+Bury Your Queers is also known as "Dead Lesbian Syndrome" or "Bury Your Gays". It basically means a disproportionate number of queers on TV die.
+
+In the early days of queers on TV, characters were not allowed to have happy endings. If they were lucky enough to end up in a relationship it was abusive, perverse, or one had to die at the end. This also happened, in large numbers, to queers who weren't in relationships, making being a queer character on TV in the US more deadly than being on the Titanic.
+
+These days, there's a thinly veiled 'justification' that 'everyone dies.' They try to make it look like the queer characters are a noble sacrifice, so they can claim they didn't kill off character as a 'punishment' for being gay, but instead that they were too worthy for this earth.
+
+The problem is that since around 1961, queer people have been seeing their television representations be disposable. And many of us strongly feel that this constant reflection in the media has a detrimental impact on our self-worth.
+
+In short? It's harmful.
+
+= What information from my site is tracked? =
+
+Nothing. We could get the domains of everyone who uses it, but that's about it. It's a read-only tool.
 
 == Screenshots ==
 
@@ -99,3 +107,4 @@ Because being a queer female character on TV is more dangerous than being on the
 = 1.3.0 =
 * January 2018 by Ipstenu
 * Rebranding - make this more positive.
+* New features - this-year, of-the-day
