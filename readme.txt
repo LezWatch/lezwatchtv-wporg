@@ -1,9 +1,9 @@
 === LezWatchTV News and Information ===
 Contributors: Ipstenu, liljimmi
-Tags: televison, queer, lesbian, tv, bury your queers
+Tags: television, queer, lesbian, tv, bury your queers
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 (or Later)
 
 Display information on queer female and trans representation on TV. Brought to you by LezWatchTV.
@@ -103,6 +103,11 @@ Nothing. We could get the domains of everyone who uses it, but that's about it. 
 5. After the plugin has successfully installed, click "Activate Plugin" and enjoy!
 
 ==Changelog==
+
+= 1.3.1 = 
+* February 2018 by Ipstenu
+* Simplified date output
+* Failsafes for offline
 
 = 1.3.0 =
 * January 2018 by Ipstenu

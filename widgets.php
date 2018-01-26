@@ -115,7 +115,7 @@ class LWTV_Last_Death_Widget extends WP_Widget {
  *
  * Widget to display ... Of The Day
  *
- * @since 1.0
+ * @since 1.3
  */
 class LWTV_Of_The_Day_Widget extends WP_Widget {
 
@@ -430,7 +430,7 @@ class LWTV_Statistics_Widget extends WP_Widget {
  *
  * Widget to display This Year data
  *
- * @since 1.0
+ * @since 1.3
  */
 class LWTV_This_Year_Widget extends WP_Widget {
 

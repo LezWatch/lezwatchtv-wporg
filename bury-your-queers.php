@@ -1,9 +1,9 @@
 <?php
 /**
- Plugin Name: LezWatchTV
+ Plugin Name: LezWatchTV News & Information
  Plugin URI: https://lezwatchtv.com/about/resources/
  Description: Display information on queer female and trans representation on TV. Brought to you by LezWatchTV.
- Version: 1.3.0
+ Version: 1.3.1
  Author: LezWatchTV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
@@ -49,8 +49,7 @@ class LezWatchTV {
 		self::$version = '1.3.0';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 
-		if ( WP_DEBUG ) self::$apiurl  = 'http://lezwatchtv.local/wp-json/lwtv/v1';
-
+		if ( WP_DEBUG ) self::$apiurl  = home_url() . '/wp-json/lwtv/v1';
 	}
 
 	/**
@@ -136,29 +135,13 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>Bury Your Queers is temporarily offline, but will return soon.</p>', 'bury-your-queers'); 
+			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
 		}
 		
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
-
-		$diff = $response['since'];
-
-		$years = floor($diff / (365*60*60*24));
-		$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-		$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-
-		$since = '';
-		if ( $years != 0 ) $since .= sprintf( _n( '%s year, ', '%s years, ', $years, 'bury-your-queers' ), $years );
-		if ( $months != 0 ) $since .= sprintf( _n( '%s month', '%s months', $months, 'bury-your-queers' ), $months );
-		$since .= ( $years != 0 )? ', ' : '';
-		$since .= ( $days != 0 && $months != 0 )? __(' and ', 'bury-your-queers') : '';
-		if ( $days != 0 ) $since .= sprintf( _n( '%s day', '%s days', $days, 'bury-your-queers' ), $days );
-
-		$response['since'] = $since;
-
-		$return = '<p>'.sprintf( __('It has been %s since the last queer female death on television', 'bury-your-queers'), '<strong>'.$response['since'].'</strong>' );
-		$return .= ': <a href="'.$response['url'].'">'.$response['name'].'</a> - '.date('F j, Y', $response['died'] ).'</p>';
+		$return   = '<p>' . sprintf( __( 'It has been %s since the last queer female death on television', 'bury-your-queers' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) .'</strong> ' );
+		$return  .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . date('F j, Y', $response['died'] ) . '</p>';
 
 		return $return;
 	}
@@ -176,6 +159,12 @@ class LezWatchTV {
 		}
 
 		$request  = wp_remote_get( self::$apiurl . '/of-the-day/' . $type );
+
+		// Make sure it's running before we do anything...
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
+			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		}
+
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode( $response, true );
 
@@ -211,6 +200,12 @@ class LezWatchTV {
 		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
 
 		$request  = wp_remote_get( self::$apiurl . '/on-this-day/' . $json_day );
+
+		// Make sure it's running before we do anything...
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
+			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		}
+
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
@@ -244,6 +239,12 @@ class LezWatchTV {
 		
 		// Request Data
 		$request  = wp_remote_get( self::$apiurl . '/stats/death/' );
+
+		// Make sure it's running before we do anything...
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
+			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		}
+
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 		
@@ -294,6 +295,12 @@ class LezWatchTV {
 
 		// Get the data
 		$request  = wp_remote_get( self::$apiurl . '/what-happened/' . $year );
+
+		// Make sure it's running before we do anything...
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
+			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		}
+
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 
