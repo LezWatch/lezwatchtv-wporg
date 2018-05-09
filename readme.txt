@@ -6,13 +6,13 @@ Tested up to: 4.9
 Stable tag: 1.3.1
 License: GPLv2 (or Later)
 
-Display information on queer female and trans representation on TV. Brought to you by LezWatchTV.
+Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatchTV.
 
 == Description ==
 
-[LezWatchTV](https://lezwatchtv.com/) catalogs and documents queer female, transgender, and non-binary characters, as well as their shows from TV, web and streaming media. With that data, statistics are calculated on the state of international queer story representation. We provide easy and free access to finding the best shows with queer characters and stories in the genres fans want to see. We can help you keep up to date with the global happenings of queer representation on television.
+[LezWatchTV](https://lezwatchtv.com/) catalogs and documents queer female, transgender, and non-binary characters, as well as their actors and shows from TV, web and streaming media. With that data, statistics are calculated on the state of international queer story representation. We provide easy and free access to finding the best shows with queer characters and stories in the genres fans want to see. We can help you keep up to date with the global happenings of queer representation on television.
 
-Currently we provide the following information about queer female or trans characters on television:
+Currently we provide the following information about those characters:
 
 * **... of the Day:** A character or show (or death of a character) of the current day
 * **Last Death:** The latest character death
@@ -20,7 +20,11 @@ Currently we provide the following information about queer female or trans chara
 * **Statistics:** The percentage of characters who died and/or shows with death
 * **This Year:** An overview of data from a specific year
 
-The [terms of Use of LezWatchTV](https://lezwatchtv.com/tos/) allow free use of the data.
+= Privacy Policy =
+
+In using this plugin, your website will contact the LezWatchTV API to request up-to-date information. The IP address of your domain will be tracked, in order to generate usage statistics of the service. There is no information collected from the visitors to your site.
+
+By using this plugin, you agree to the [terms of Use of LezWatchTV](https://lezwatchtv.com/tos/) as a service provider. All data collected falls under the [LezWatchTV Privacy Policy](https://lezwatchtv.com/tos/privacy/).
 
 = Usage =
 
@@ -58,7 +62,7 @@ Data is pulled from [LezWatchTV](https://lezwatchtv.com).
 
 = How accurate is the data? =
 
-As accurate as humanly possible. LezWatchTV is a hobby site and we curate the content by hand.
+As accurate as humanly possible. LezWatchTV content is curated by hand.
 
 = Is this US shows only? =
 
@@ -76,7 +80,7 @@ We know. The world is a big place. [Please drop us a line and let us know](https
 
 Because the site data is from LezWatchTV and that's what we specialize in. If someone wants to make a similar site for male queers, we're happy to help them output their data so it can be used too.
 
-= Why "Bury Your Queers"? = 
+= Why was this plugin originally called "Bury Your Queers"? = 
 
 Bury Your Queers is also known as "Dead Lesbian Syndrome" or "Bury Your Gays". It basically means a disproportionate number of queers on TV die.
 
@@ -90,7 +94,10 @@ In short? It's harmful.
 
 = What information from my site is tracked? =
 
-Nothing. We could get the domains of everyone who uses it, but that's about it. It's a read-only tool.
+The IP address and domain of sites that use this plugin are tracked _only_ when the plugin is activated and used on the front-end of your website. No data is tracked until a widget or shortcode is in place. For more information, please review the following:
+
+* [Terms of Use](https://lezwatchtv.com/tos/)
+* [Privacy Policy](https://lezwatchtv.com/tos/privacy/).
 
 == Screenshots ==
 
