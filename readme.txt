@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, bury your queers
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatchTV.
@@ -41,9 +41,9 @@ The data can be displayed via a widget or a shortcode.
 **Shortcodes**
 
 * `[lez-watch data="last-death"]`
-* `[lez-watch data="of-the-day" otd-type={character|show|death}]`
-* `[lez-watch data="on-this-day"]`
-* `[lez-watch data="on-this-day" date-format="MM-DD"]`
+* `[lez-watch data="of-the-day" otd-type={character|show|death|birthday}]`
+* `[lez-watch data="died-on-this-day"]`
+* `[lez-watch data="died-on-this-day" date-format="MM-DD"]`
 * `[lez-watch data="stats"]`
 * `[lez-watch data="stats" stat-type={characters|shows}]`
 * `[lez-watch data="this-year" date-format="YYYY"]`
@@ -111,12 +111,19 @@ The IP address and domain of sites that use this plugin are tracked _only_ when 
 
 ==Changelog==
 
-= 1.3.1 = 
+=== 1.4.0 ===
+
+* May 2018 by Ipstenu
+* New features - this-year, of-the-day
+
+=== 1.3.1 ===
+
 * February 2018 by Ipstenu
 * Simplified date output
 * Failsafes for offline
 
-= 1.3.0 =
+=== 1.3.0 ===
+
 * January 2018 by Ipstenu
 * Rebranding - make this more positive.
 * New features - this-year, of-the-day

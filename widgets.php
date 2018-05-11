@@ -274,7 +274,7 @@ class LWTV_On_This_Day_Widget extends WP_Widget {
 
 		$date = ( ! empty( $instance['date'] ) )? $instance['date'] : 'today' ;
 
-		echo LezWatchTV::on_this_day( $date );
+		echo LezWatchTV::died_on_this_day( $date );
 
 		echo $args['after_widget'];
 	}

@@ -3,7 +3,7 @@
  Plugin Name: LezWatchTV News & Information
  Plugin URI: https://lezwatchtv.com/about/resources/
  Description: Display information on queer female and trans representation on TV. Brought to you by LezWatchTV.
- Version: 1.3.1
+ Version: 1.4.0
  Author: LezWatchTV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
@@ -46,7 +46,7 @@ class LezWatchTV {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.3.0';
+		self::$version = '1.4.0';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 
 		if ( WP_DEBUG ) self::$apiurl  = home_url() . '/wp-json/lwtv/v1';
@@ -83,28 +83,24 @@ class LezWatchTV {
 		$this_day = sanitize_text_field( $attributes[ 'date-format' ] );
 		$stat_fmt = sanitize_text_field( $attributes[ 'stat-type' ] );
 		$otd_type = sanitize_text_field( $attributes[ 'otd-type' ] );
-		
+
 		switch ( $attributes[ 'data' ] ) {
 			case 'last-death':
 				$return = $this->last_death();
 				break;
-
 			case 'of-the-day':
 				$return = $this->of_the_day( $otd_type );
 				break;
-
 			case 'on-this-day':
-				$return = $this->on_this_day( $this_day );
+			case 'died-on-this-day':
+				$return = $this->died_on_this_day( $this_day );
 				break;
-
 			case 'stats':
 				$return = $this->statistics( $stat_fmt );
 				break;
-
 			case 'this-year':
 				$return = $this->this_year( $this_day );
 				break;
-
 			default: 
 				$return = '';
 		}
@@ -147,13 +143,13 @@ class LezWatchTV {
 	}
 
 	/**
-	 * On This Day
-	 * Code that generates the On This Day code
+	 * Of The Day
+	 * Code that generates the Of The Day code
 	 */
 	public static function of_the_day( $type = 'character' ) {
 
 		// Quick Failsafe
-		$valid_types = array( 'character', 'show', 'death' );
+		$valid_types = array( 'character', 'show', 'death', 'birthday' );
 		if ( !in_array( $type, $valid_types ) ) {
 			$type = 'character';
 		}
@@ -171,7 +167,16 @@ class LezWatchTV {
 		switch ( $type ) {
 			case 'death':
 				$image   = '';
-				$content = self::on_this_day( 'today' );
+				$content = self::died_on_this_day( 'today' );
+				break;
+			case 'birthday':
+				if ( !empty( $response ) && isset( $response['birthdays'] ) ) {
+					$image   = '<img src="' . plugins_url( 'birthday.jpg', __FILE__ ) . '" width="' . get_option( 'medium_size_w' ) .'">';
+					$content = $response['birthdays'];
+				} else {
+					$image   = '';
+					$content = __( 'No one is celebrating a birthday today.', 'bury-your-queers' );
+				}
 				break;
 			default:
 				$image   = '<a href="' .  $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'medium_size_w' ) .'"></a><br />';
@@ -185,9 +190,9 @@ class LezWatchTV {
 
 	/**
 	 * On This Day
-	 * Code that generates the On This Day code
+	 * Code that generates the On This Day death code
 	 */
-	public static function on_this_day( $this_day = 'today' ) {
+	public static function died_on_this_day( $this_day = 'today' ) {
 
 		$this_day = sanitize_text_field( $this_day );
 		if ( $this_day !== 'today' ) {
