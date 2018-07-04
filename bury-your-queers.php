@@ -1,23 +1,23 @@
 <?php
 /**
- Plugin Name: LezWatchTV News & Information
+ Plugin Name: LezWatch.TV News & Information
  Plugin URI: https://lezwatchtv.com/about/resources/
- Description: Display information on queer female and trans representation on TV. Brought to you by LezWatchTV.
+ Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
  Version: 1.4.0
- Author: LezWatchTV
+ Author: LezWatch.TV
  Author URI: https://lezwatchtv.com/
  License: GPLv2 (or Later)
 
-	Copyright 2017-18 LezWatchTV (email: webmaster@lezwatchtv.com)
+	Copyright 2017-18 LezWatch.TV (email: webmaster@lezwatchtv.com)
 
-	This file is part of LezWatchTV, a plugin for WordPress.
+	This file is part of LezWatch.TV, a plugin for WordPress.
 
-	LezWatchTV is free software: you can redistribute it and/or modify
+	LezWatch.TV is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 2 of the License, or
 	(at your option) any later version.
 
-	LezWatchTV is distributed in the hope that it will be useful,
+	LezWatch.TV is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
@@ -27,13 +27,13 @@
 */
 
 /*
- * class LezWatchTV
+ * class LezWatch.TV
  *
  * Main class for plugin
  *
  * @since 1.0
  */
-class LezWatchTV {
+class LezWatch_TV {
 
 	protected static $version;
 	public static $apiurl;
@@ -131,7 +131,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
 		}
 		
 		$response = wp_remote_retrieve_body( $request );
@@ -158,7 +158,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -183,7 +183,7 @@ class LezWatchTV {
 				$content = '<a href="' .  $response['url'] . '">' . $response['name'] . '</a>';
 		}
 
-		$return = '<div class="lwtv-of-the-day">' . $image . $content . '</div>';
+		$return = '<div class="lwtv-of-the-day lwtv-' . $type . '-of-the-day">' . $image . $content . '</div>';
 
 		return $return;
 	}
@@ -208,7 +208,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -247,7 +247,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -303,7 +303,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatchTV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -344,7 +344,7 @@ class LezWatchTV {
 	}
 
 }
-new LezWatchTV();
+new LezWatch_TV();
 
 // Include Widgets
 include_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );

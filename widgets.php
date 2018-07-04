@@ -5,16 +5,16 @@
  * This file contains all the widget code for LWTV
  * @since 1.2.0
 	
-	Copyright 2017-18 LezWatchTV (email: webmaster@lezwatchtv.com)
+	Copyright 2017-18 LezWatch.TV (email: webmaster@lezwatchtv.com)
 
-	This file is part of LezWatchTV, a plugin for WordPress.
+	This file is part of LezWatch.TV, a plugin for WordPress.
 
-	LezWatchTV is free software: you can redistribute it and/or modify
+	LezWatch.TV is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 2 of the License, or
 	(at your option) any later version.
 
-	LezWatchTV is distributed in the hope that it will be useful,
+	LezWatch.TV is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
@@ -77,7 +77,7 @@ class LWTV_Last_Death_Widget extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 
-		echo LezWatchTV::last_death();
+		echo LezWatch_TV::last_death();
 
 		echo $args['after_widget'];
 	}
@@ -139,7 +139,7 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 		$this->valid_types = array( 'character', 'show', 'death' );
 
 		$widget_ops = array(
-			'classname'   => 'lwtv-of-the-day otdwidget',
+			'classname'   => 'widget-lwtv-of-the-day',
 			'description' => __( 'Displays the character, show, or death of the day.', 'bury-your-queers' ),
 		);
 
@@ -169,7 +169,7 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 
 		$type = ( ! empty( $instance['type'] ) )? $instance['type'] : 'character' ;
 
-		echo LezWatchTV::of_the_day( $type );
+		echo '<center>' . LezWatch_TV::of_the_day( $type ) . '</center>';
 
 		echo $args['after_widget'];
 	}
@@ -198,7 +198,7 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 	 * @param array $instance Current settings
 	 */
 	function form( $instance ) {
-		$instance    = wp_parse_args( (array) $instance, $this->defaults );
+		$instance = wp_parse_args( (array) $instance, $this->defaults );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
@@ -274,7 +274,7 @@ class LWTV_On_This_Day_Widget extends WP_Widget {
 
 		$date = ( ! empty( $instance['date'] ) )? $instance['date'] : 'today' ;
 
-		echo LezWatchTV::died_on_this_day( $date );
+		echo LezWatch_TV::died_on_this_day( $date );
 
 		echo $args['after_widget'];
 	}
@@ -377,7 +377,7 @@ class LWTV_Statistics_Widget extends WP_Widget {
 
 		$type = ( ! empty( $instance['type'] ) )? $instance['type'] : 'all' ;
 
-		echo LezWatchTV::statistics( $type );
+		echo LezWatch_TV::statistics( $type );
 
 		echo $args['after_widget'];
 	}
@@ -482,7 +482,7 @@ class LWTV_This_Year_Widget extends WP_Widget {
 
 		$year = ( ! empty( $instance['year'] ) )? $instance['year'] : date( 'Y' ) ;
 
-		echo LezWatchTV::this_year( $year );
+		echo LezWatch_TV::this_year( $year );
 
 		echo $args['after_widget'];
 	}
@@ -509,7 +509,7 @@ class LWTV_This_Year_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
 		// Get the first year
-		$request  = wp_remote_get( LezWatchTV::$apiurl . '/stats/first-year/' );
+		$request  = wp_remote_get( LezWatch_TV::$apiurl . '/stats/first-year/' );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode($response, true);
 		?>
