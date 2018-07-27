@@ -20,9 +20,9 @@
 
 
 // if uninstall.php is not called by WordPress, die
-if (!defined('WP_UNINSTALL_PLUGIN')) {
-    die;
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	die;
 }
 
-delete_option('widget_byq-dead-char');
-delete_option('widget_byq-on-this-day');
+delete_option( 'widget_byq-dead-char' );
+delete_option( 'widget_byq-on-this-day' );

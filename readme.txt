@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, bury your queers
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatch.TV.
@@ -80,7 +80,7 @@ We know. The world is a big place. [Please drop us a line and let us know](https
 
 Because the site data is from LezWatch.TV and that's what we specialize in. If someone wants to make a similar site for male queers, we're happy to help them output their data so it can be used.
 
-= Why was this plugin originally called "Bury Your Queers"? = 
+= Why was this plugin originally called "Bury Your Queers"? =
 
 Bury Your Queers is also known as "Dead Lesbian Syndrome" or "Bury Your Gays". It basically means a disproportionate number of queers on TV die.
 
@@ -110,6 +110,11 @@ The IP address and domain of sites that use this plugin are tracked _only_ when 
 5. After the plugin has successfully installed, click "Activate Plugin" and enjoy!
 
 ==Changelog==
+
+=== 1.4.1 ===
+
+* August 2018 by Ipstenu
+* WPCS (code standards, we have them)
 
 === 1.4.0 ===
 

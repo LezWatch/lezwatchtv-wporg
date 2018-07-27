@@ -4,24 +4,24 @@
  * Plugin File: Widgets
  * This file contains all the widget code for LWTV
  * @since 1.2.0
-	
-	Copyright 2017-18 LezWatch.TV (email: webmaster@lezwatchtv.com)
-
-	This file is part of LezWatch.TV, a plugin for WordPress.
-
-	LezWatch.TV is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 2 of the License, or
-	(at your option) any later version.
-
-	LezWatch.TV is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WordPress.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * Copyright 2017-18 LezWatch.TV (email: webmaster@lezwatchtv.com)
+ *
+ * This file is part of LezWatch.TV, a plugin for WordPress.
+ *
+ * LezWatch.TV is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * LezWatch.TV is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WordPress.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /*
  * class LWTV_Last_Death_Widget
@@ -42,7 +42,7 @@ class LWTV_Last_Death_Widget extends WP_Widget {
 	 *
 	 * Set the default widget options and create widget.
 	 */
-	function __construct() {
+	public function __construct() {
 
 		$this->defaults = array(
 			'title' => __( 'Last Queer Death', 'bury-your-queers' ),
@@ -66,7 +66,7 @@ class LWTV_Last_Death_Widget extends WP_Widget {
 	 * @param array $args Display arguments
 	 * @param array $instance The settings for the particular instance of the widget
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 
 		extract( $args );
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
@@ -77,7 +77,7 @@ class LWTV_Last_Death_Widget extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 
-		echo LezWatch_TV::last_death();
+		echo wp_kses_post( LezWatch_TV::last_death() );
 
 		echo $args['after_widget'];
 	}
@@ -402,9 +402,9 @@ class LWTV_Statistics_Widget extends WP_Widget {
 	 */
 	function form( $instance ) {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
-		
+
 		$stat_types = array( 'characters', 'shows' );
-		
+
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>

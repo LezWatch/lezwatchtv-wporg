@@ -1,29 +1,29 @@
 <?php
 /**
- Plugin Name: LezWatch.TV News & Information
- Plugin URI: https://lezwatchtv.com/about/resources/
- Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
- Version: 1.4.0
- Author: LezWatch.TV
- Author URI: https://lezwatchtv.com/
- License: GPLv2 (or Later)
-
-	Copyright 2017-18 LezWatch.TV (email: webmaster@lezwatchtv.com)
-
-	This file is part of LezWatch.TV, a plugin for WordPress.
-
-	LezWatch.TV is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 2 of the License, or
-	(at your option) any later version.
-
-	LezWatch.TV is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with WordPress.  If not, see <http://www.gnu.org/licenses/>.
+ * Plugin Name: LezWatch.TV News & Information
+ * Plugin URI: https://lezwatchtv.com/about/resources/
+ * Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
+ * Version: 1.4.1
+ * Author: LezWatch.TV
+ * Author URI: https://lezwatchtv.com/
+ * License: GPLv2 (or Later)
+ *
+ * Copyright 2017-18 LezWatch.TV (email: webmaster@lezwatchtv.com)
+ *
+ * This file is part of LezWatch.TV News & Information, a plugin for WordPress.
+ *
+ * This plugin is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WordPress.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
@@ -49,7 +49,9 @@ class LezWatch_TV {
 		self::$version = '1.4.0';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 
-		if ( WP_DEBUG ) self::$apiurl  = home_url() . '/wp-json/lwtv/v1';
+		if ( WP_DEBUG ) {
+			self::$apiurl = home_url() . '/wp-json/lwtv/v1';
+		}
 	}
 
 	/**
@@ -63,8 +65,11 @@ class LezWatch_TV {
 	/**
 	 * Admin Scripts
 	 */
-	public function admin_enqueue_scripts($hook) {
-		if( $hook !== 'widgets.php' ) return;
+	public function admin_enqueue_scripts( $hook ) {
+		if ( 'widgets.php' !== $hook ) {
+			return;
+		}
+
 		wp_enqueue_script( 'lwtv-onthisday', plugins_url( 'js/otd-datepicker.js', __FILE__ ), array( 'jquery-ui-datepicker' ), self::$version, true );
 		wp_enqueue_style( 'jquery-ui', plugins_url( 'css/jquery-ui.css', __FILE__ ), array(), self::$version );
 	}
@@ -80,11 +85,11 @@ class LezWatch_TV {
 			'otd-type'    => 'character',
 		], $atts);
 
-		$this_day = sanitize_text_field( $attributes[ 'date-format' ] );
-		$stat_fmt = sanitize_text_field( $attributes[ 'stat-type' ] );
-		$otd_type = sanitize_text_field( $attributes[ 'otd-type' ] );
+		$this_day = sanitize_text_field( $attributes['date-format'] );
+		$stat_fmt = sanitize_text_field( $attributes['stat-type'] );
+		$otd_type = sanitize_text_field( $attributes['otd-type'] );
 
-		switch ( $attributes[ 'data' ] ) {
+		switch ( $attributes['data'] ) {
 			case 'last-death':
 				$return = $this->last_death();
 				break;
@@ -101,7 +106,7 @@ class LezWatch_TV {
 			case 'this-year':
 				$return = $this->this_year( $this_day );
 				break;
-			default: 
+			default:
 				$return = '';
 		}
 
@@ -112,9 +117,9 @@ class LezWatch_TV {
 	 * Register Widgets
 	 */
 	public function register_widgets() {
-		
+
 		$widgets = array( 'LWTV_Last_Death_Widget', 'LWTV_Of_The_Day_Widget', 'LWTV_On_This_Day_Widget', 'LWTV_Statistics_Widget', 'LWTV_This_Year_Widget' );
-		
+
 		foreach ( $widgets as $widget ) {
 			$this->widget = new $widget();
 			register_widget( $this->widget );
@@ -126,18 +131,19 @@ class LezWatch_TV {
 	 * Code that generates the last death
 	 */
 	public static function last_death() {
-		
-		$request  = wp_remote_get( self::$apiurl . '/last-death/' );
+
+		$request = wp_remote_get( self::$apiurl . '/last-death/' );
 
 		// Make sure it's running before we do anything...
-		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' );
 		}
-		
+
 		$response = wp_remote_retrieve_body( $request );
-		$response = json_decode($response, true);
-		$return   = '<p>' . sprintf( __( 'It has been %s since the last queer female death on television', 'bury-your-queers' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) .'</strong> ' );
-		$return  .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . date('F j, Y', $response['died'] ) . '</p>';
+		$response = json_decode( $response, true );
+		// translators: %s is the amount of time since a queer death (1 day, 2 days, 1 month, etc)
+		$return  = '<p>' . sprintf( __( 'It has been %s since the last queer female death on television', 'bury-your-queers' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) . '</strong> ' );
+		$return .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . date( 'F j, Y', $response['died'] ) . '</p>';
 
 		return $return;
 	}
@@ -150,15 +156,15 @@ class LezWatch_TV {
 
 		// Quick Failsafe
 		$valid_types = array( 'character', 'show', 'death', 'birthday' );
-		if ( !in_array( $type, $valid_types ) ) {
+		if ( ! in_array( $type, $valid_types, true ) ) {
 			$type = 'character';
 		}
 
-		$request  = wp_remote_get( self::$apiurl . '/of-the-day/' . $type );
+		$request = wp_remote_get( self::$apiurl . '/of-the-day/' . $type );
 
 		// Make sure it's running before we do anything...
-		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' );
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -170,8 +176,8 @@ class LezWatch_TV {
 				$content = self::died_on_this_day( 'today' );
 				break;
 			case 'birthday':
-				if ( !empty( $response ) && isset( $response['birthdays'] ) ) {
-					$image   = '<img src="' . plugins_url( 'birthday.jpg', __FILE__ ) . '" width="' . get_option( 'medium_size_w' ) .'">';
+				if ( ! empty( $response ) && isset( $response['birthdays'] ) ) {
+					$image   = '<img src="' . plugins_url( 'birthday.jpg', __FILE__ ) . '" width="' . get_option( 'medium_size_w' ) . '">';
 					$content = $response['birthdays'];
 				} else {
 					$image   = '';
@@ -179,8 +185,8 @@ class LezWatch_TV {
 				}
 				break;
 			default:
-				$image   = '<a href="' .  $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'medium_size_w' ) .'"></a><br />';
-				$content = '<a href="' .  $response['url'] . '">' . $response['name'] . '</a>';
+				$image   = '<a href="' . $response['url'] . '"><img src="' . $response['image'] . '" width="' . get_option( 'medium_size_w' ) . '"></a><br />';
+				$content = '<a href="' . $response['url'] . '">' . $response['name'] . '</a>';
 		}
 
 		$return = '<div class="lwtv-of-the-day lwtv-' . $type . '-of-the-day">' . $image . $content . '</div>';
@@ -195,42 +201,43 @@ class LezWatch_TV {
 	public static function died_on_this_day( $this_day = 'today' ) {
 
 		$this_day = sanitize_text_field( $this_day );
-		if ( $this_day !== 'today' ) {
-			$month = substr( $this_day, 0, 2);
-			$day = substr( $this_day, 3, 2);
-			$this_day = ( checkdate ( $month, $day , date('Y') ) == true )? $this_day : 'today' ;
+		if ( 'today' !== $this_day ) {
+			$month    = substr( $this_day, 0, 2 );
+			$day      = substr( $this_day, 3, 2 );
+			$this_day = ( true === checkdate( $month, $day, date( 'Y' ) ) ) ? $this_day : 'today';
 		}
 
-		$echo_day = ( $this_day == 'today' )? time() : strtotime( date('Y').'-'.$this_day );
-		$json_day = ( $this_day == 'today' )? '' : $this_day.'/' ;
-
+		$echo_day = ( 'today' === $this_day ) ? time() : strtotime( date( 'Y' ) . '-' . $this_day );
+		$json_day = ( 'today' === $this_day ) ? '' : $this_day . '/';
 		$request  = wp_remote_get( self::$apiurl . '/on-this-day/' . $json_day );
 
 		// Make sure it's running before we do anything...
-		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' );
 		}
 
 		$response = wp_remote_retrieve_body( $request );
-		$response = json_decode($response, true);
+		$response = json_decode( $response, true );
 
-		$count = ( key($response) == 'none' )? 0 : count($response) ;
-		$how_many = __('no characters died!', 'bury-your-queers');
+		$count    = ( 'none' === key( $response ) ) ? 0 : count( $response );
+		$how_many = __( 'no characters died!', 'bury-your-queers' );
 		$the_dead = '';
 
 		if ( $count > 0 ) {
+			// translators: %s is the number of dead characters.
 			$how_many = sprintf( _n( '%s character died:', '%s characters died:', $count, 'bury-your-queers' ), $count );
 
 			$the_dead = '<ul class="byq-otd">';
 
 			foreach ( $response as $dead_character ) {
-				$the_dead .= '<li><a href="'.$dead_character['url'].'">'.$dead_character['name'].'</a> - '.$dead_character['died'] .'</li>';
+				$the_dead .= '<li><a href="' . $dead_character['url'] . '">' . $dead_character['name'] . '</a> - ' . $dead_character['died'] . '</li>';
 			}
 			$the_dead .= '</ul>';
 		}
 
-		$onthisday = '<p>'. sprintf( __( 'On %s, %s', 'bury-your-queers'), date('F jS', $echo_day ), $how_many ).'</p>';
-		$return = $onthisday.$the_dead;
+		// translators: %1$s is the date; %2$s is the number of dead
+		$onthisday = '<p>' . sprintf( __( 'On %1$s, %2$s', 'bury-your-queers' ), date( 'F jS', $echo_day ), $how_many ) . '</p>';
+		$return    = $onthisday . $the_dead;
 
 		return $return;
 	}
@@ -241,45 +248,49 @@ class LezWatch_TV {
 	 */
 	public static function statistics( $format = 'all' ) {
 		$format = sanitize_text_field( $format );
-		
+
 		// Request Data
-		$request  = wp_remote_get( self::$apiurl . '/stats/death/' );
+		$request = wp_remote_get( self::$apiurl . '/stats/death/' );
 
 		// Make sure it's running before we do anything...
-		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' );
 		}
 
 		$response = wp_remote_retrieve_body( $request );
-		$response = json_decode($response, true);
-		
+		$response = json_decode( $response, true );
+
 		// The Math part
-		$live_chars    = $response[ 'characters' ][ 'alive' ];
-		$dead_chars    = $response[ 'characters' ][ 'dead' ];
+		$live_chars    = $response['characters']['alive'];
+		$dead_chars    = $response['characters']['dead'];
 		$total_chars   = $live_chars + $dead_chars;
 		$percent_chars = number_format( ( $dead_chars / $total_chars ) * 100, 2 );
-		
-		$live_shows    = $response[ 'shows' ][ 'no-death' ];
-		$dead_shows    = $response[ 'shows' ][ 'death' ];
+
+		$live_shows    = $response['shows']['no-death'];
+		$dead_shows    = $response['shows']['death'];
 		$total_shows   = $live_shows + $dead_shows;
 		$percent_shows = number_format( ( $dead_shows / $total_shows ) * 100, 2 );
 
-		$character_return = sprintf( __( 'There are %s dead characters out of %s.', 'bury-your-queers' ), $live_chars, $total_chars ) ;
-		$character_percent_return = sprintf( __( '%s%% of all queer females on TV are dead.', 'bury-your-queers' ), $percent_chars ) ;
+		// translators: %1$s is the number of dead characters out of %2$s total characters.
+		$character_return = sprintf( __( 'There are %1$s dead characters out of %2$s.', 'bury-your-queers' ), $live_chars, $total_chars );
+		// translators: %s is the percentage of dead.
+		$character_percent_return = sprintf( __( '%s%% of all queer females on TV are dead.', 'bury-your-queers' ), $percent_chars );
 
-		$show_return = sprintf( __( 'There are %s shows with dead characters out of %s.', 'bury-your-queers' ), $dead_shows, $total_shows ) ;
-		$show_percent_return = sprintf( __( '%s%% of TV shows with any queer female have at least one dead.', 'bury-your-queers' ), $percent_shows ) ;
-		
+		// translators: %1$s is the number of shows with dead characters out of %2$s total shows.
+		$show_return = sprintf( __( 'There are %1$s shows with dead characters out of %2$s.', 'bury-your-queers' ), $dead_shows, $total_shows );
+		// translators: %s is the percentage of shows with dead.
+		$show_percent_return = sprintf( __( '%s%% of TV shows with any queer female have at least one dead.', 'bury-your-queers' ), $percent_shows );
+
 		switch ( $format ) {
 			case 'characters':
 				$return = $character_percent_return;
 				break;
-			
+
 			case 'shows':
 				$return = $show_percent_return;
 				break;
-			
-			default: 
+
+			default:
 				$return = $character_percent_return . ' ' . $show_percent_return;
 		}
 		return '<p>' . $return . '</p>';
@@ -288,57 +299,70 @@ class LezWatch_TV {
 
 	/**
 	 * this_year function.
-	 * 
+	 *
 	 * @access public
 	 * @param bool $year (default: false)
 	 * @return void
 	 */
-	function this_year( $year = false ) {
-		
+	public function this_year( $year = false ) {
+
 		// If the year isn't valid, we default to this year
-		$year = ( !$year || !preg_match( '/^[0-9]{4}$/', $year ) )? date( 'Y' ) : $year;
+		$year = ( ! $year || ! preg_match( '/^[0-9]{4}$/', $year ) ) ? date( 'Y' ) : $year;
 
 		// Get the data
-		$request  = wp_remote_get( self::$apiurl . '/what-happened/' . $year );
+		$request = wp_remote_get( self::$apiurl . '/what-happened/' . $year );
 
 		// Make sure it's running before we do anything...
-		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) { 
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' ); 
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
+			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'bury-your-queers' );
 		}
 
 		$response = wp_remote_retrieve_body( $request );
-		$response = json_decode($response, true);
+		$response = json_decode( $response, true );
 
 		// If we got an error, bail
-		if ( array_key_exists( 'success', $response ) && !$response['success'] ) {
+		if ( array_key_exists( 'success', $response ) && ! $response['success'] ) {
+			// translators: %s is a year. Probably 1961.
 			$fail = sprintf( __( 'There were no queer female or trans characters on TV prior to %s.', 'bury-your-queers' ), $response['data'] );
 			return $fail;
 		}
 
-		// Posts etc made:
-		$characters = ( $response['characters'] == 0 )? __( 'no characters', 'bury-your-queers' ) : sprintf( _n( '%s character', '%s characters', $response['characters'], 'bury-your-queers' ), $response['characters'] );
-		$shows      = ( $response['shows'] == 0 )? 'no shows' : sprintf( _n( '%s show', '%s shows', $response['shows'], 'bury-your-queers' ), $response['shows'] );
-		$posts      = ( $response['posts'] == 0 )? 'no posts' : sprintf( _n( '%s post', '%s posts', $response['posts'], 'bury-your-queers' ), $response['posts'] );
+		// Posts etc made.
+		// translators: %s is the number of characters
+		$characters = ( 0 === $response['characters'] ) ? __( 'no characters', 'bury-your-queers' ) : sprintf( _n( '%s character', '%s characters', $response['characters'], 'bury-your-queers' ), $response['characters'] );
+		// translators: %s is the number of shows
+		$shows = ( 0 === $response['shows'] ) ? 'no shows' : sprintf( _n( '%s show', '%s shows', $response['shows'], 'bury-your-queers' ), $response['shows'] );
+		// translators: %s is the number of posts
+		$posts = ( 0 === $response['posts'] ) ? 'no posts' : sprintf( _n( '%s post', '%s posts', $response['posts'], 'bury-your-queers' ), $response['posts'] );
 
 		// This Year On Air information:
-		$on_air  = ( $response['on_air']['current'] == 0 )? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( '%s show', '%s shows', $response['on_air']['current'], 'bury-your-queers' ), $response['on_air']['current'] );
-		$started = ( $response['on_air']['started'] == 0 )? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( 'Only %s show', 'A total of %s shows', $response['on_air']['started'], 'bury-your-queers' ), $response['on_air']['started'] );
-		$ended   = ( $response['on_air']['ended'] == 0 )? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( 'only %s show', '%s shows', $response['on_air']['ended'], 'bury-your-queers' ), $response['on_air']['ended'] );
+		// translators: %s is the number of shows on air in that year
+		$on_air = ( 0 === $response['on_air']['current'] ) ? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( '%s show', '%s shows', $response['on_air']['current'], 'bury-your-queers' ), $response['on_air']['current'] );
+		// translators: %s is the number of shows that started in that year
+		$started = ( 0 === $response['on_air']['started'] ) ? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( 'Only %s show', 'A total of %s shows', $response['on_air']['started'], 'bury-your-queers' ), $response['on_air']['started'] );
+		// translators: %s is the number of shows that ended in that year
+		$ended = ( 0 === $response['on_air']['ended'] ) ? __( 'no shows', 'bury-your-queers' ) : sprintf( _n( 'only %s show', '%s shows', $response['on_air']['ended'], 'bury-your-queers' ), $response['on_air']['ended'] );
 
 		// Death
-		$death_this_year = ( $response['dead_year'] == 0 )? __( 'Amazingly no characters died', 'bury-your-queers' ) : sprintf( _n( 'Only %s character died', 'Sadly, %s characters died', $response['dead_year'], 'bury-your-queers' ), $response['dead_year'] );
+		// translators: %s is the number of characters that died in that year
+		$death_this_year = ( 0 === $response['dead_year'] ) ? __( 'Amazingly no characters died', 'bury-your-queers' ) : sprintf( _n( 'Only %s character died', 'Sadly, %s characters died', $response['dead_year'], 'bury-your-queers' ), $response['dead_year'] );
 
 		// The Output
-		$return = sprintf( __( 'In %s, there were %s with queer female or trans characters on the air. %s started and %s ended that year. %s.', 'bury-your-queers' ), $year, $on_air, $started, $ended, $death_this_year );
+		// translators: %1$s is the year
+		// translators: %2$s is the number of characters on TV that Year
+		// translators: %3$s is the number of shows that begun that year
+		// translators: %4$s is the number of shows that ended that year
+		// translators: %5$s is the all the stuff about dead that year
+		$return = sprintf( __( 'In %1$s, there were %2$s with queer female or trans characters on the air. %3$s started and %4$s ended that year. %5$s.', 'bury-your-queers' ), $year, $on_air, $started, $ended, $death_this_year );
 
 		return $return;
 	}
 
 	// donate link on manage plugin page
-	function donate_link( $links, $file ) {
-		if ($file == plugin_basename(__FILE__)) {
+	public function donate_link( $links, $file ) {
+		if ( plugin_basename( __FILE__ ) === $file ) {
 			$donate_link = '<a href="https://ko-fi.com/A236CEN/">' . __( 'Donate', 'bury-your-queers' ) . '</a>';
-			$links[] = $donate_link;
+			$links[]     = $donate_link;
 		}
 		return $links;
 	}
@@ -347,4 +371,4 @@ class LezWatch_TV {
 new LezWatch_TV();
 
 // Include Widgets
-include_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
+require_once plugin_dir_path( __FILE__ ) . 'widgets.php';
