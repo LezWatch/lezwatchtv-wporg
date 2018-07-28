@@ -46,10 +46,10 @@ class LezWatch_TV {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.4.0';
+		self::$version = '1.4.1';
 		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 
-		if ( WP_DEBUG ) {
+		if ( WP_DEBUG && ( defined( 'LWTV_DEV_SITE' ) && LWTV_DEV_SITE ) ) {
 			self::$apiurl = home_url() . '/wp-json/lwtv/v1';
 		}
 	}
@@ -371,4 +371,8 @@ class LezWatch_TV {
 new LezWatch_TV();
 
 // Include Widgets
-require_once plugin_dir_path( __FILE__ ) . 'widgets.php';
+require_once plugin_dir_path( __FILE__ ) . 'widgets/last-death.php';
+require_once plugin_dir_path( __FILE__ ) . 'widgets/of-the-day.php';
+require_once plugin_dir_path( __FILE__ ) . 'widgets/on-this-day.php';
+require_once plugin_dir_path( __FILE__ ) . 'widgets/statistics.php';
+require_once plugin_dir_path( __FILE__ ) . 'widgets/this-year.php';
