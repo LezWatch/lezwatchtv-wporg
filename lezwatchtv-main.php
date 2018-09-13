@@ -150,14 +150,16 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+			$response = __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+		} else {
+			$response = wp_remote_retrieve_body( $request );
+			$response = json_decode( $response, true );
+			// translators: %s is the amount of time since a queer death (1 day, 2 days, 1 month, etc)
+			$return  = '<p>' . sprintf( __( 'It has been %s since the last queer female death on television', 'lezwatchtv' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) . '</strong> ' );
+			$return .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . date( 'F j, Y', $response['died'] ) . '</p>';
 		}
 
-		$response = wp_remote_retrieve_body( $request );
-		$response = json_decode( $response, true );
-		// translators: %s is the amount of time since a queer death (1 day, 2 days, 1 month, etc)
-		$return  = '<p>' . sprintf( __( 'It has been %s since the last queer female death on television', 'lezwatchtv' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) . '</strong> ' );
-		$return .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . date( 'F j, Y', $response['died'] ) . '</p>';
+		$return = '<div class="lezwatchtv last-death">' . $return . '</div>';
 
 		return $return;
 	}
@@ -187,6 +189,7 @@ class LezWatchTV {
 		switch ( $type ) {
 			case 'death':
 				$image   = '';
+				$title   = '';
 				$content = self::died_on_this_day( 'today' );
 				break;
 			case 'birthday':
@@ -195,6 +198,7 @@ class LezWatchTV {
 					$content = $response['birthdays'];
 				} else {
 					$image   = '';
+					$title   = '';
 					$content = __( 'No one is celebrating a birthday today.', 'lezwatchtv' );
 				}
 				break;
@@ -203,7 +207,7 @@ class LezWatchTV {
 				$content = '<a href="' . $response['url'] . '">' . $response['name'] . '</a>';
 		}
 
-		$return = '<div class="lwtv-of-the-day lwtv-' . $type . '-of-the-day">' . $image . $content . '</div>';
+		$return = '<div class="lezwatchtv of-the-day ' . $type . '-of-the-day">' . $image . $content . '</div>';
 
 		return $return;
 	}
