@@ -43,11 +43,20 @@ class LezWatchTV_Gutenblocks {
 			false
 		);
 
+		$style_css = 'last-death/style.css';
+		wp_register_style(
+			'last-death-style',
+			plugins_url( $style_css, __FILE__ ),
+			array( 'wp-editor', 'wp-blocks' ),
+			filemtime( self::$directory . '/' . $style_css )
+		);
+
 		register_block_type(
 			'lezwatchtv/last-death',
 			array(
 				'attributes'      => array(),
 				'editor_script'   => 'last-death-editor',
+				'style'           => 'last-death-style',
 				'render_callback' => array( 'LezWatchTV', 'last_death' ),
 			)
 		);
@@ -63,6 +72,14 @@ class LezWatchTV_Gutenblocks {
 			false
 		);
 
+		$style_css = 'of-the-day/style.css';
+		wp_register_style(
+			'of-the-day-style',
+			plugins_url( $style_css, __FILE__ ),
+			array( 'wp-editor', 'wp-blocks' ),
+			filemtime( self::$directory . '/' . $style_css )
+		);
+
 		register_block_type(
 			'lezwatchtv/of-the-day',
 			array(
@@ -76,6 +93,7 @@ class LezWatchTV_Gutenblocks {
 					),
 				),
 				'editor_script'   => 'of-the-day-editor',
+				'style'           => 'of-the-day-style',
 				'render_callback' => array( 'LezWatchTV', 'shortcode' ),
 			)
 		);
