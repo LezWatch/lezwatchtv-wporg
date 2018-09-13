@@ -56,7 +56,6 @@ class LezWatchTV_Gutenblocks {
 			array(
 				'attributes'      => array(),
 				'editor_script'   => 'last-death-editor',
-				'style'           => 'last-death-style',
 				'render_callback' => array( 'LezWatchTV', 'last_death' ),
 			)
 		);
