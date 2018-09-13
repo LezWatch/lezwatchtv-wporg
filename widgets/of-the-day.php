@@ -5,7 +5,7 @@
  * @since 1.0
  */
 
-class LWTV_Of_The_Day_Widget extends WP_Widget {
+class LezWatchTV_Of_The_Day_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
@@ -21,21 +21,21 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 	public function __construct() {
 
 		$this->defaults    = array(
-			'title' => __( 'Of The Day', 'bury-your-queers' ),
+			'title' => __( 'Of The Day', 'lezwatchtv' ),
 			'type'  => 'character',
 		);
 		$this->valid_types = array( 'character', 'show', 'death' );
 
 		$widget_ops = array(
 			'classname'   => 'widget-lwtv-of-the-day',
-			'description' => __( 'Displays the character, show, or death of the day.', 'bury-your-queers' ),
+			'description' => __( 'Displays the character, show, or death of the day.', 'lezwatchtv' ),
 		);
 
 		$control_ops = array(
 			'id_base' => 'lwtv-of-the-day',
 		);
 
-		parent::__construct( 'lwtv-of-the-day', __( 'LWTV - Of The Day', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'lwtv-of-the-day', __( 'LWTV - Of The Day', 'lezwatchtv' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 
 		$type = ( ! empty( $instance['type'] ) ) ? $instance['type'] : 'character';
 
-		echo '<center>' . LezWatch_TV::of_the_day( $type ) . '</center>';
+		echo '<center>' . LezWatchTV::of_the_day( $type ) . '</center>';
 
 		echo $args['after_widget'];
 	}
@@ -88,12 +88,12 @@ class LWTV_Of_The_Day_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'lezwatchtv' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php esc_html_e( 'Type', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php esc_html_e( 'Type', 'lezwatchtv' ); ?>: </label>
 			<select id="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'type' ) ); ?>" class="widefat">
 				<?php
 				foreach ( $this->valid_types as $type ) {

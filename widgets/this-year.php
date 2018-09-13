@@ -2,10 +2,10 @@
 /*
  * Plugin File: Widgets -- This Year
  * Widget to display This Year data
- * @since 1.3.0
+ * @since 1.0
  */
 
-class LWTV_This_Year_Widget extends WP_Widget {
+class LezWatchTV_This_Year_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
@@ -20,20 +20,20 @@ class LWTV_This_Year_Widget extends WP_Widget {
 	public function __construct() {
 
 		$this->defaults = array(
-			'title' => __( 'In This Year', 'bury-your-queers' ),
+			'title' => __( 'In This Year', 'lezwatchtv' ),
 			'year'  => date( 'Y' ),
 		);
 
 		$widget_ops = array(
 			'classname'   => 'in-this-year thisyearwidget',
-			'description' => __( 'Displays a review of queer female and trans representation on TV for a given year.', 'bury-your-queers' ),
+			'description' => __( 'Displays a review of queer female and trans representation on TV for a given year.', 'lezwatchtv' ),
 		);
 
 		$control_ops = array(
 			'id_base' => 'byq-in-this-year',
 		);
 
-		parent::__construct( 'byq-in-this-year', __( 'LWTV - In This Year', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'byq-in-this-year', __( 'LWTV - In This Year', 'lezwatchtv' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -55,7 +55,7 @@ class LWTV_This_Year_Widget extends WP_Widget {
 
 		$year = ( ! empty( $instance['year'] ) )? $instance['year'] : date( 'Y' ) ;
 
-		echo LezWatch_TV::this_year( $year );
+		echo LezWatchTV::this_year( $year );
 
 		echo $args['after_widget'];
 	}
@@ -69,7 +69,7 @@ class LWTV_This_Year_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$new_instance['title'] = wp_strip_all_tags( $new_instance['title'] );
-		$new_instance['year'] = ( preg_match( '/^[0-9]{4}$/', $new_instance['year'] ) )? $new_instance['year'] : date( 'Y' );
+		$new_instance['year']  = ( preg_match( '/^[0-9]{4}$/', $new_instance['year'] ) ) ? $new_instance['year'] : date( 'Y' );
 		return $new_instance;
 	}
 
@@ -82,20 +82,22 @@ class LWTV_This_Year_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
 		// Get the first year
-		$request  = wp_remote_get( LezWatch_TV::$apiurl . '/stats/first-year/' );
+		$request  = wp_remote_get( LezWatchTV::$apiurl . '/stats/first-year/' );
 		$response = wp_remote_retrieve_body( $request );
-		$response = json_decode($response, true);
+		$response = json_decode( $response, true );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'lezwatchtv' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php _e( 'Year', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php esc_html_e( 'Year', 'lezwatchtv' ); ?>: </label>
 			<select id="<?php echo $this->get_field_id( 'year' ); ?>" name="<?php echo $this->get_field_name( 'year' ); ?>" class="widefat" style="width:100%;">
-				<?php for( $year = $response['first']; $year <= date( 'Y' ); ++$year ) {
-					echo '<option ' . selected( $instance[ 'year' ], $year ) .' value="' . $year . '">' . $year . '</option>';
-				} ?>
+				<?php
+				for ( $year = $response['first']; $year <= date( 'Y' ); ++$year ) {
+					echo '<option ' . selected( $instance['year'], $year ) . ' value="' . $year . '">' . $year . '</option>';
+				}
+				?>
 			</select>
 		</p>
 		<?php

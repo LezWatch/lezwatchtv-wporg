@@ -2,10 +2,10 @@
 /*
  * Plugin File: Widgets -- Statistics
  * Widget to display death statistics
- * @since 1.2.0
+ * @since 1.0
  */
 
-class LWTV_Statistics_Widget extends WP_Widget {
+class LezWatchTV_Statistics_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
@@ -20,20 +20,20 @@ class LWTV_Statistics_Widget extends WP_Widget {
 	public function __construct() {
 
 		$this->defaults = array(
-			'title' => __( 'Queer Fatality Statistics', 'bury-your-queers' ),
+			'title' => __( 'Queer Fatality Statistics', 'lezwatchtv' ),
 			'type'  => '',
 		);
 
 		$widget_ops = array(
 			'classname'   => 'dead-stats deadwidget',
-			'description' => __( 'Displays the percentage of how many queer female or trans TV characters who have died, and/or how many shows have death.', 'bury-your-queers' ),
+			'description' => __( 'Displays the percentage of how many queer female or trans TV characters who have died, and/or how many shows have death.', 'lezwatchtv' ),
 		);
 
 		$control_ops = array(
 			'id_base' => 'byq-statistics',
 		);
 
-		parent::__construct( 'byq-statistics', __( 'LWTV - Statistics', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'byq-statistics', __( 'LWTV - Statistics', 'lezwatchtv' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class LWTV_Statistics_Widget extends WP_Widget {
 
 		$type = ( ! empty( $instance['type'] ) )? $instance['type'] : 'all' ;
 
-		echo LezWatch_TV::statistics( $type );
+		echo LezWatchTV::statistics( $type );
 
 		echo $args['after_widget'];
 	}
@@ -84,12 +84,12 @@ class LWTV_Statistics_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'lezwatchtv' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php esc_html_e( 'Type', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php esc_html_e( 'Type', 'lezwatchtv' ); ?>: </label>
 
 			<select id="<?php echo $this->get_field_id( 'type' ); ?>" name="<?php echo $this->get_field_name( 'type' ); ?>" class="widefat" style="width:100%;">
 				<option value="" selected>All</option>

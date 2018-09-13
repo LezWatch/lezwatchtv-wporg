@@ -1,5 +1,5 @@
 /**
- * This script adds in the datepicker format for ByQ - On This Day
+ * Datepicker format
  */
 
 jQuery(function() {
@@ -7,4 +7,3 @@ jQuery(function() {
         dateFormat : "mm-dd"
     });
 });
-

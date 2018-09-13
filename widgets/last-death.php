@@ -2,15 +2,10 @@
 /*
  * Plugin File: Widget -- Last Death
  * Widget to display last queer death
- * @since 1.2.0
+ * @since 1.0.0
  */
 
-/*
- * class LWTV_Last_Death_Widget
- * Widget to display last queer death
- * @since 1.0
- */
-class LWTV_Last_Death_Widget extends WP_Widget {
+class LezWatchTV_Last_Death_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
@@ -25,19 +20,19 @@ class LWTV_Last_Death_Widget extends WP_Widget {
 	public function __construct() {
 
 		$this->defaults = array(
-			'title' => __( 'Last Queer Death', 'bury-your-queers' ),
+			'title' => __( 'Last Queer Death', 'lezwatchtv' ),
 		);
 
 		$widget_ops = array(
 			'classname'   => 'dead-character deadwidget',
-			'description' => __( 'Displays time since the last queer female or trans character death on television.', 'bury-your-queers' ),
+			'description' => __( 'Displays time since the last queer female or trans character death on television.', 'lezwatchtv' ),
 		);
 
 		$control_ops = array(
 			'id_base' => 'byq-dead-char',
 		);
 
-		parent::__construct( 'byq-dead-char', __( 'LWTV - Last Death', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'byq-dead-char', __( 'LWTV - Last Death', 'lezwatchtv' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -56,7 +51,7 @@ class LWTV_Last_Death_Widget extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 
-		echo wp_kses_post( LezWatch_TV::last_death() );
+		echo wp_kses_post( LezWatchTV::last_death() );
 
 		echo $args['after_widget'];
 	}
@@ -82,7 +77,7 @@ class LWTV_Last_Death_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'lezwatchtv' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 		<?php

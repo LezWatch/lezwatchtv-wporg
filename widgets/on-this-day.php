@@ -5,7 +5,7 @@
  * @since 1.0
  */
 
-class LWTV_On_This_Day_Widget extends WP_Widget {
+class LezWatchTV_On_This_Day_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
@@ -20,20 +20,20 @@ class LWTV_On_This_Day_Widget extends WP_Widget {
 	public function __construct() {
 
 		$this->defaults = array(
-			'title' => __( 'On This Day', 'bury-your-queers' ),
+			'title' => __( 'On This Day', 'lezwatchtv' ),
 			'date'  => '',
 		);
 
 		$widget_ops = array(
 			'classname'   => 'dead-on-this-day deadwidget',
-			'description' => __( 'Displays any queer female or trans TV character who died on this day in years past.', 'bury-your-queers' ),
+			'description' => __( 'Displays any queer female or trans TV character who died on this day in years past.', 'lezwatchtv' ),
 		);
 
 		$control_ops = array(
 			'id_base' => 'byq-on-this-day',
 		);
 
-		parent::__construct( 'byq-on-this-day', __( 'LWTV - On This Day', 'bury-your-queers' ), $widget_ops, $control_ops );
+		parent::__construct( 'byq-on-this-day', __( 'LWTV - On This Day', 'lezwatchtv' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class LWTV_On_This_Day_Widget extends WP_Widget {
 
 		$date = ( ! empty( $instance['date'] ) ) ? $instance['date'] : 'today' ;
 
-		echo LezWatch_TV::died_on_this_day( $date );
+		echo LezWatchTV::died_on_this_day( $date );
 
 		echo $args['after_widget'];
 	}
@@ -89,14 +89,14 @@ class LWTV_On_This_Day_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'lezwatchtv' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php esc_html_e( 'Date (Optional)', 'bury-your-queers' ); ?>: </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php esc_html_e( 'Date (Optional)', 'lezwatchtv' ); ?>: </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'date' ) ); ?>" class="datepicker" value="<?php echo esc_attr( $instance['date'] ); ?>" class="widefat" />
-			<br><em><?php esc_html_e( 'If left blank, the date used will be the current day.', 'bury-your-queers' ); ?></em>
+			<br><em><?php esc_html_e( 'If left blank, the date used will be the current day.', 'lezwatchtv' ); ?></em>
 		</p>
 		<?php
 	}
