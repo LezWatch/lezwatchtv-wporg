@@ -3,7 +3,7 @@
  * Plugin Name: LezWatch.TV News & Information
  * Plugin URI: https://lezwatchtv.com/about/resources/
  * Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: LezWatch.TV
  * Author URI: https://lezwatchtv.com/
  * License: GPLv2 (or Later)
@@ -60,9 +60,16 @@ class LezWatchTV {
 	 * Admin Init
 	 */
 	public function admin_init() {
+		// Deactivate the old plugin
 		if ( is_plugin_active( 'bury-your-queers/bury-your-queers.php' ) ) {
 			deactivate_plugins( 'bury-your-queers/bury-your-queers.php' );
 		}
+
+		// If the old plugin is still installed, show an error.
+		if ( file_exists( plugin_dir_path( __DIR__ ) . 'bury-your-queers/bury-your-queers.php' ) ) {
+			add_action( 'admin_notices', array( $this, 'admin_notice_byq' ) );
+		}
+
 	}
 
 	/**
@@ -71,6 +78,22 @@ class LezWatchTV {
 	public function init() {
 		add_shortcode( 'lwtv', array( $this, 'shortcode' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'donate_link' ), 10, 2 );
+	}
+
+	/**
+	 * Admin Notice: Please uninstall BYQ
+	 * @return string
+	 * @since 1.1.0
+	 */
+	public function admin_notice_byq() {
+		// Generate uninstall URL
+		$uninstall = wp_nonce_url( 'plugins.php?action=delete-selected&verify-delete=1&checked[]=bury-your-queers/bury-your-queers.php', 'bulk-plugins' );
+
+		// translators: %s is the uninstall URL
+		$message = sprintf( __( 'You have activated LezWatch.TV, however the old plugin (formerly called Bury Your Queers) is still installed. Please <strong><a href=%s>uninstall</a></strong> the plugin as it will no longer work.', 'lezwatchtv' ), esc_url( $uninstall ) );
+
+		// translators: %s is the message translated above
+		printf( '<div class="notice notice-error"><p>%s</p></div>', wp_kses_post( $message ) );
 	}
 
 	/**
@@ -366,7 +389,7 @@ class LezWatchTV {
 		$death_this_year = ( 0 === $response['dead_year'] ) ? __( 'Amazingly no characters died', 'lezwatchtv' ) : sprintf( _n( 'Only %s character died', 'Sadly, %s characters died', $response['dead_year'], 'bury-your-queers' ), $response['dead_year'] );
 
 		// The Output
-		// translators: %1$s is the year;  %2$s is the number of characters on TV that Year;  %3$s is the number of shows that begun that year;  %4$s is the number of shows that ended that year; %5$s is the all the stuff about dead that year
+		// translators: %1$s is the year; %2$s is the number of characters on TV that Year; %3$s is the number of shows that begun that year; %4$s is the number of shows that ended that year; %5$s is the all the stuff about dead that year
 		$return = sprintf( __( 'In %1$s, there were %2$s with queer female or trans characters on the air. %3$s started and %4$s ended that year. %5$s.', 'lezwatchtv' ), $year, $on_air, $started, $ended, $death_this_year );
 
 		return $return;
@@ -387,5 +410,5 @@ new LezWatchTV();
 // Include Widgets
 require_once 'widgets/_main.php';
 
-// Include Gutenberg
-require_once 'gutenberg/_main.php';
+// Include Blocks
+require_once 'blocks/_main.php';
