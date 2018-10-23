@@ -43,6 +43,7 @@ registerBlockType( 'lezwatchtv/of-the-day', {
 	edit: props => {
 
 		const { attributes: { placeholder }, setAttributes } = props;
+		getAuthors
 
 		return (
 			<Fragment>

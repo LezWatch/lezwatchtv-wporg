@@ -2,7 +2,7 @@
 Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, lezwatchtv
 Requires at least: 4.8
-Tested up to: 4.9
+Tested up to: 5.0
 Stable tag: 1.1.0
 License: GPLv2 (or Later)
 
