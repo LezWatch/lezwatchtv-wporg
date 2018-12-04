@@ -38,7 +38,7 @@ class LezWatchTV_Gutenblocks {
 		wp_register_script(
 			'last-death-editor',
 			plugins_url( $index_js, __FILE__ ),
-			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
+			array( 'wp-element', 'wp-components', 'wp-editor' ),
 			filemtime( self::$directory . '/' . $index_js ),
 			false
 		);
@@ -47,7 +47,7 @@ class LezWatchTV_Gutenblocks {
 		wp_register_style(
 			'last-death-style',
 			plugins_url( $style_css, __FILE__ ),
-			array( 'wp-editor', 'wp-blocks' ),
+			array( 'wp-editor' ),
 			filemtime( self::$directory . '/' . $style_css )
 		);
 
@@ -66,7 +66,7 @@ class LezWatchTV_Gutenblocks {
 		wp_register_script(
 			'of-the-day-editor',
 			plugins_url( $index_js, __FILE__ ),
-			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
+			array( 'wp-element', 'wp-components', 'wp-editor' ),
 			filemtime( self::$directory . '/' . $index_js ),
 			false
 		);
@@ -75,7 +75,7 @@ class LezWatchTV_Gutenblocks {
 		wp_register_style(
 			'of-the-day-style',
 			plugins_url( $style_css, __FILE__ ),
-			array( 'wp-editor', 'wp-blocks' ),
+			array( 'wp-editor' ),
 			filemtime( self::$directory . '/' . $style_css )
 		);
 
@@ -103,7 +103,7 @@ class LezWatchTV_Gutenblocks {
 		wp_register_script(
 			'died-on-this-day-editor',
 			plugins_url( $index_js, __FILE__ ),
-			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
+			array( 'wp-element', 'wp-components', 'wp-editor' ),
 			filemtime( self::$directory . '/' . $index_js ),
 			false
 		);
