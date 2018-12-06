@@ -57,7 +57,7 @@ class LezWatchTV_Multi_Blocks {
 		wp_enqueue_style(
 			'lezwatchtv_multi_blocks-cgb-style-css', // Handle.
 			plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ),
-			array( 'wp-blocks' ),
+			array( 'wp-editor' ),
 			filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' )
 		);
 	}
@@ -67,7 +67,7 @@ class LezWatchTV_Multi_Blocks {
 		wp_enqueue_script(
 			'lezwatchtv_multi_blocks-cgb-block-js', // Handle.
 			plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
-			array( 'wp-blocks', 'wp-i18n', 'wp-element' ),
+			array( 'wp-editor', 'wp-i18n', 'wp-element' ),
 			filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ),
 			true
 		);

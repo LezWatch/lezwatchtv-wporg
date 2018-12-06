@@ -103,7 +103,7 @@ The IP address and domain of sites that use this plugin are tracked _only_ when 
 
 = 1.1.0 =
 
-* XXXX 2018 by Ipstenu
+* December 2018 by Ipstenu
 * Updated OTD blocks to ESNext
 
 = 1.0.0 =
