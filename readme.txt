@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, lezwatchtv
 Requires at least: 4.8
 Tested up to: 5.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatch.TV.
@@ -100,6 +100,11 @@ The IP address and domain of sites that use this plugin are tracked _only_ when 
 5. After the plugin has successfully installed, click "Activate Plugin" and enjoy!
 
 ==Changelog==
+
+= 1.1.1 =
+
+* July 2019 by Ipstenu
+* Corrected fallback for when site is offline.
 
 = 1.1.0 =
 

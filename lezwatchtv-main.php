@@ -3,12 +3,12 @@
  * Plugin Name: LezWatch.TV News & Information
  * Plugin URI: https://lezwatchtv.com/about/resources/
  * Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: LezWatch.TV
  * Author URI: https://lezwatchtv.com/
  * License: GPLv2 (or Later)
  *
- * Copyright 2017-18 LezWatch.TV (email: webmaster@lezwatchtv.com)
+ * Copyright 2017-19 LezWatch.TV (email: webmaster@lezwatchtv.com)
  *
  * This file is part of LezWatch.TV News & Information, a plugin for WordPress.
  *
@@ -173,7 +173,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-			$response = __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+			$return = __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
 		} else {
 			$response = wp_remote_retrieve_body( $request );
 			$response = json_decode( $response, true );
