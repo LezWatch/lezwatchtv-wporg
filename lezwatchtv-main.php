@@ -3,7 +3,7 @@
  * Plugin Name: LezWatch.TV News & Information
  * Plugin URI: https://lezwatchtv.com/about/resources/
  * Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
- * Version: 1.2
+ * Version: 1.2.1
  * Author: LezWatch.TV
  * Author URI: https://lezwatchtv.com/
  * License: GPLv2 (or Later)
@@ -37,6 +37,7 @@ class LezWatchTV {
 
 	protected static $version;
 	public static $apiurl;
+	public static $unavailable;
 
 	/**
 	 * Constructor
@@ -47,8 +48,9 @@ class LezWatchTV {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version = '1.0.0';
-		self::$apiurl  = 'https://lezwatchtv.com/wp-json/lwtv/v1';
+		self::$version     = '1.0.0';
+		self::$apiurl      = 'https://lezwatchtv.com/wp-json/lwtv/v1';
+		self::$unavailable = __( '<p>LezWatch.TV\'s API is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
 
 		// This should only apply to LWTV Dev sites.
 		if ( WP_DEBUG && ( defined( 'LWTV_DEV_SITE' ) && LWTV_DEV_SITE ) ) {
@@ -173,13 +175,13 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-			$return = __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+			$return = self::$unavailable . ' - ' . wp_remote_retrieve_response_code( $request );
 		} else {
 			$response = wp_remote_retrieve_body( $request );
 			$response = json_decode( $response, true );
 			// translators: %s is the amount of time since a queer death (1 day, 2 days, 1 month, etc)
 			$return  = '<p>' . sprintf( __( 'It has been %s since the last queer female death on television', 'lezwatchtv' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) . '</strong> ' );
-			$return .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . date( 'F j, Y', $response['died'] ) . '</p>';
+			$return .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . gmdate( 'F j, Y', $response['died'] ) . '</p>';
 		}
 
 		$return = '<div class="lezwatchtv last-death">' . $return . '</div>';
@@ -203,7 +205,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+			return self::$unavailable;
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -254,7 +256,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+			return self::$unavailable;
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -295,7 +297,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+			return self::$unavailable;
 		}
 
 		$response = wp_remote_retrieve_body( $request );
@@ -355,7 +357,7 @@ class LezWatchTV {
 
 		// Make sure it's running before we do anything...
 		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-			return __( '<p>LezWatch.TV is temporarily offline, but will return soon.</p>', 'lezwatchtv' );
+			return self::$unavailable;
 		}
 
 		$response = wp_remote_retrieve_body( $request );
