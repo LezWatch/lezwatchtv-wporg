@@ -1,9 +1,9 @@
 === LezWatch.TV News and Information ===
 Contributors: Ipstenu, liljimmi
-Tags: television, queer, lesbian, tv, lezwatchtv
+Tags: television, queer, lesbian, tv, block
 Requires at least: 4.8
 Tested up to: 5.4
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatch.TV.
@@ -28,7 +28,7 @@ By using this plugin, you agree to the [terms of Use of LezWatch.TV](https://lez
 
 = Usage =
 
-The data can be displayed via a widget, a shortcode, or a Gutenberg Block.
+The data can be displayed via a widget, a shortcode, or a Block.
 
 **Widgets**
 
@@ -89,6 +89,15 @@ The IP address and domain of sites that use this plugin are tracked _only_ when 
 * [Terms of Use](https://lezwatchtv.com/tos/)
 * [Privacy Policy](https://lezwatchtv.com/tos/privacy/)
 
+= Can I change the URL it calls data from? =
+
+You can, but we caution you that the calls won't work unless you match the data. You're more than welcome to fork the code from our [Github repository](https://github.com/LezWatch/lwtv-plugin/tree/production/rest-api). Once you've built your own version, you'll need to do the following:
+
+1. Turn on `WP_DEBUG`
+2. Define `LWTV_DEV_SITE_API` as your demo url
+
+It's only meant for in-house development, but flexibility is king.
+
 == Screenshots ==
 
 == Installation ==
@@ -101,17 +110,14 @@ The IP address and domain of sites that use this plugin are tracked _only_ when 
 
 ==Changelog==
 
-= 1.1.1 =
+= 1.2.1 =
 
-* July 2019 by Ipstenu
-* Corrected fallback for when site is offline.
+* August 2020 by Ipstenu
+* DRY: Combined translations
+* Adjust development hooks
+* Full compatibility with WP 5.5 and PHP 7.4
 
-= 1.1.0 =
+= 1.2 =
 
-* December 2018 by Ipstenu
-* Updated OTD blocks to ESNext
-
-= 1.0.0 =
-
-* September 2018 by Ipstenu
-* Reboot and rebranding - all the good, none of the bad.
+* March 2020 by Ipstenu
+* Update for WP 5.4

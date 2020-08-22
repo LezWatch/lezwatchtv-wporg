@@ -1,4 +1,14 @@
-=== 1.0.0 ===
+= 1.1.1 =
+
+* July 2019 by Ipstenu
+* Corrected fallback for when site is offline.
+
+= 1.1.0 =
+
+* December 2018 by Ipstenu
+* Updated OTD blocks to ESNext
+
+= 1.0.0 =
 
 * September 2018 by Ipstenu
 * Reboot and rebranding - all the good, none of the bad.
