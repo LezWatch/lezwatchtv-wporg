@@ -2,7 +2,7 @@
 Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, block
 Requires at least: 4.8
-Tested up to: 5.4
+Tested up to: 5.6
 Stable tag: 1.2.1
 License: GPLv2 (or Later)
 
@@ -115,7 +115,7 @@ It's only meant for in-house development, but flexibility is king.
 * August 2020 by Ipstenu
 * DRY: Combined translations
 * Adjust development hooks
-* Full compatibility with WP 5.5 and PHP 7.4
+* Full compatibility with WP 5.5+ and PHP 7.4
 
 = 1.2 =
 
