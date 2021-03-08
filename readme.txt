@@ -110,6 +110,12 @@ It's only meant for in-house development, but flexibility is king.
 
 ==Changelog==
 
+= 1.2.2 =
+
+* March 2021 by Ipstenu
+* Fix bug with transients
+* Compat with PHP 8 and WP 5.7
+
 = 1.2.1 =
 
 * August 2020 by Ipstenu

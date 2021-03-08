@@ -8,7 +8,7 @@
  * Author URI: https://lezwatchtv.com/
  * License: GPLv2 (or Later)
  *
- * Copyright 2017-2020 LezWatch.TV (email: webmaster@lezwatchtv.com)
+ * Copyright 2017-2021 LezWatch.TV (email: webmaster@lezwatchtv.com)
  *
  * This file is part of LezWatch.TV News & Information, a plugin for WordPress.
  *
