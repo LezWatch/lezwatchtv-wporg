@@ -3,7 +3,7 @@
  * Plugin Name: LezWatch.TV News & Information
  * Plugin URI: https://lezwatchtv.com/about/resources/
  * Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: LezWatch.TV
  * Author URI: https://lezwatchtv.com/
  * License: GPLv2 (or Later)
@@ -157,11 +157,19 @@ class LezWatchTV {
 	 */
 	public function register_widgets() {
 
-		$widgets = array( 'LezWatchTV_Last_Death_Widget', 'LezWatchTV_Of_The_Day_Widget', 'LezWatchTV_On_This_Day_Widget', 'LezWatchTV_Statistics_Widget', 'LezWatchTV_This_Year_Widget' );
+		$widgets = array(
+			'LezWatchTV_Last_Death_Widget',
+			'LezWatchTV_Of_The_Day_Widget',
+			'LezWatchTV_On_This_Day_Widget',
+			'LezWatchTV_Statistics_Widget',
+			'LezWatchTV_This_Year_Widget',
+		);
 
 		foreach ( $widgets as $widget ) {
-			$this->widget = new $widget();
-			register_widget( $this->widget );
+			if ( class_exists( $widget ) ) {
+				$this->widget = new $widget();
+				register_widget( $this->widget );
+			}
 		}
 	}
 
