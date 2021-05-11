@@ -21,7 +21,7 @@ class LezWatchTV_This_Year_Widget extends WP_Widget {
 
 		$this->defaults = array(
 			'title' => __( 'In This Year', 'lezwatchtv' ),
-			'year'  => date( 'Y' ),
+			'year'  => gmdate( 'Y' ),
 		);
 
 		$widget_ops = array(
@@ -44,20 +44,19 @@ class LezWatchTV_This_Year_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		extract( $args );
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
 
-		$year = ( ! empty( $instance['year'] ) )? $instance['year'] : date( 'Y' ) ;
+		$year = ( ! empty( $instance['year'] ) ) ? $instance['year'] : gmdate( 'Y' );
 
-		echo LezWatchTV::this_year( $year );
+		echo wp_kses_post( LezWatchTV::this_year( $year ) );
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
@@ -69,7 +68,7 @@ class LezWatchTV_This_Year_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$new_instance['title'] = wp_strip_all_tags( $new_instance['title'] );
-		$new_instance['year']  = ( preg_match( '/^[0-9]{4}$/', $new_instance['year'] ) ) ? $new_instance['year'] : date( 'Y' );
+		$new_instance['year']  = ( preg_match( '/^[0-9]{4}$/', $new_instance['year'] ) ) ? $new_instance['year'] : gmdate( 'Y' );
 		return $new_instance;
 	}
 
@@ -92,10 +91,10 @@ class LezWatchTV_This_Year_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'date' ) ); ?>"><?php esc_html_e( 'Year', 'lezwatchtv' ); ?>: </label>
-			<select id="<?php echo $this->get_field_id( 'year' ); ?>" name="<?php echo $this->get_field_name( 'year' ); ?>" class="widefat" style="width:100%;">
+			<select id="<?php echo esc_attr( $this->get_field_id( 'year' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'year' ) ); ?>" class="widefat" style="width:100%;">
 				<?php
-				for ( $year = $response['first']; $year <= date( 'Y' ); ++$year ) {
-					echo '<option ' . selected( $instance['year'], $year ) . ' value="' . $year . '">' . $year . '</option>';
+				for ( $year = $response['first']; $year <= gmdate( 'Y' ); ++$year ) {
+					echo '<option ' . selected( $instance['year'], $year ) . ' value="' . esc_attr( $year ) . '">' . esc_attr( $year ) . '</option>';
 				}
 				?>
 			</select>

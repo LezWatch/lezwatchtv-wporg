@@ -46,17 +46,17 @@ class LezWatchTV_On_This_Day_Widget extends WP_Widget {
 
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
 
-		$date = ( ! empty( $instance['date'] ) ) ? $instance['date'] : 'today' ;
+		$date = ( ! empty( $instance['date'] ) ) ? $instance['date'] : 'today';
 
-		echo LezWatchTV::died_on_this_day( $date );
+		echo wp_kses_post( LezWatchTV::died_on_this_day( $date ) );
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class LezWatchTV_On_This_Day_Widget extends WP_Widget {
 		$new_instance['date'] = substr( $new_instance['date'], 0, 5 );
 		$month                = substr( $new_instance['date'], 0, 2 );
 		$day                  = substr( $new_instance['date'], 3, 2 );
-		if ( checkdate( $month, $day, date( 'Y' ) ) === false ) {
+		if ( checkdate( $month, $day, gmdate( 'Y' ) ) === false ) {
 			$new_instance['date'] = '';
 		}
 		$new_instance['date'] = wp_strip_all_tags( $new_instance['date'] );
