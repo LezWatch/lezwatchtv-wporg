@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, block
 Requires at least: 4.8
 Tested up to: 5.7
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatch.TV.
