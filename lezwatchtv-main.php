@@ -3,12 +3,12 @@
  * Plugin Name: LezWatch.TV News & Information
  * Plugin URI: https://lezwatchtv.com/about/resources/
  * Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: LezWatch.TV
  * Author URI: https://lezwatchtv.com/
  * License: GPLv2 (or Later)
  *
- * Copyright 2017-2020 LezWatch.TV (email: webmaster@lezwatchtv.com)
+ * Copyright 2017-2021 LezWatch.TV (email: webmaster@lezwatchtv.com)
  *
  * This file is part of LezWatch.TV News & Information, a plugin for WordPress.
  *
@@ -115,12 +115,12 @@ class LezWatchTV {
 	 */
 	public static function shortcode( $atts ) {
 		$attributes = shortcode_atts(
-			[
+			array(
 				'data' => 'of-the-day',
 				'date' => 'today',
 				'stat' => 'all',
 				'otd'  => 'character',
-			],
+			),
 			$atts
 		);
 
@@ -184,7 +184,7 @@ class LezWatchTV {
 			$response = wp_remote_retrieve_body( $request );
 			$response = json_decode( $response, true );
 			// translators: %s is the amount of time since a queer death (1 day, 2 days, 1 month, etc)
-			$return  = '<p>' . sprintf( __( 'It has been %s since the last queer female death on television', 'lezwatchtv' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) . '</strong> ' );
+			$return  = '<p>' . sprintf( __( 'It has been %s since the last queer female, non-binary, or transgender death on television', 'lezwatchtv' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) . '</strong> ' );
 			$return .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . gmdate( 'F j, Y', $response['died'] ) . '</p>';
 		}
 
@@ -255,10 +255,10 @@ class LezWatchTV {
 		if ( 'today' !== $this_day ) {
 			$month    = substr( $this_day, 0, 2 );
 			$day      = substr( $this_day, 3, 2 );
-			$this_day = ( true === checkdate( $month, $day, date( 'Y' ) ) ) ? $this_day : 'today';
+			$this_day = ( true === checkdate( $month, $day, gmdate( 'Y' ) ) ) ? $this_day : 'today';
 		}
 
-		$echo_day = ( 'today' === $this_day ) ? time() : strtotime( date( 'Y' ) . '-' . $this_day );
+		$echo_day = ( 'today' === $this_day ) ? time() : strtotime( gmdate( 'Y' ) . '-' . $this_day );
 		$json_day = ( 'today' === $this_day ) ? '' : $this_day . '/';
 		$request  = wp_remote_get( self::$apiurl . '/on-this-day/' . $json_day );
 
@@ -365,7 +365,7 @@ class LezWatchTV {
 	public function this_year( $year = false ) {
 
 		// If the year isn't valid, we default to this year
-		$year = ( ! $year || ! preg_match( '/^[0-9]{4}$/', $year ) ) ? date( 'Y' ) : $year;
+		$year = ( ! $year || ! preg_match( '/^[0-9]{4}$/', $year ) ) ? gmdate( 'Y' ) : $year;
 
 		// Get the data
 		$request = wp_remote_get( self::$apiurl . '/what-happened/' . $year );

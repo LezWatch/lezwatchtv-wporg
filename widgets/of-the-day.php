@@ -48,17 +48,17 @@ class LezWatchTV_Of_The_Day_Widget extends WP_Widget {
 
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
 
 		$type = ( ! empty( $instance['type'] ) ) ? $instance['type'] : 'character';
 
-		echo '<center>' . LezWatchTV::of_the_day( $type ) . '</center>';
+		echo '<center>' . wp_kses_post( LezWatchTV::of_the_day( $type ) ) . '</center>';
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

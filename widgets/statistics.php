@@ -46,17 +46,17 @@ class LezWatchTV_Statistics_Widget extends WP_Widget {
 
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
 
-		$type = ( ! empty( $instance['type'] ) )? $instance['type'] : 'all' ;
+		$type = ( ! empty( $instance['type'] ) ) ? $instance['type'] : 'all';
 
-		echo LezWatchTV::statistics( $type );
+		echo wp_kses_post( LezWatchTV::statistics( $type ) );
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class LezWatchTV_Statistics_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php esc_html_e( 'Type', 'lezwatchtv' ); ?>: </label>
 
-			<select id="<?php echo $this->get_field_id( 'type' ); ?>" name="<?php echo $this->get_field_name( 'type' ); ?>" class="widefat" style="width:100%;">
+			<select id="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'type' ) ); ?>" class="widefat" style="width:100%;">
 				<option value="" selected>All</option>
 				<?php
 				foreach ( $stat_types as $type ) {
