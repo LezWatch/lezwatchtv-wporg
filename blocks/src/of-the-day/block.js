@@ -9,9 +9,11 @@ import './editor.scss';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const { ServerSideRender, SelectControl, PanelBody } = wp.components;
-const { InspectorControls } = wp.editor;
+const { SelectControl, PanelBody } = wp.components;
+const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
+
+ import ServerSideRender from '@wordpress/server-side-render';
 
 /**
  * Register: Gutenberg Block.
