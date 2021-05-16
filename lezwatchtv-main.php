@@ -48,7 +48,7 @@ class LezWatchTV {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-		self::$version     = '1.2.1';
+		self::$version     = '1.3';
 		self::$apiurl      = 'https://lezwatchtv.com/wp-json/lwtv/v1';
 		self::$unavailable = __( 'LezWatch.TV\'s API is temporarily offline, but will return soon.', 'lezwatchtv' );
 
@@ -92,7 +92,7 @@ class LezWatchTV {
 		$uninstall = wp_nonce_url( 'plugins.php?action=delete-selected&verify-delete=1&checked[]=bury-your-queers/bury-your-queers.php', 'bulk-plugins' );
 
 		// translators: %s is the uninstall URL
-		$message = sprintf( __( 'You have activated LezWatch.TV, however the old plugin (formerly called Bury Your Queers) is still installed. Please <strong><a href=%s>uninstall</a></strong> the plugin as it will no longer work.', 'lezwatchtv' ), esc_url( $uninstall ) );
+		$message = sprintf( __( 'You have activated LezWatch.TV, however the old plugin (formerly called Bury Your Queers) is still installed. Please <strong><a href=%s>uninstall</a></strong> the BYQ plugin as it will no longer work.', 'lezwatchtv' ), esc_url( $uninstall ) );
 
 		// translators: %s is the message translated above
 		printf( '<div class="notice notice-error"><p>%s</p></div>', wp_kses_post( $message ) );

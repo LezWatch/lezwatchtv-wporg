@@ -1,16 +1,15 @@
-This project was bootstrapped with [Create Guten Block](https://github.com/ahmadawais/create-guten-block).
+This project is bootstrapped by [the official WordPress create-block tool](https://developer.wordpress.org/block-editor/handbook/tutorials/create-block/wp-plugin/)
 
 ## Build Directions
 
-* `npm start`
-    - Use to compile and run the block in development mode.
-    - Watches for any changes and reports back any errors in your code.
-
-* `npm run build`
-    - Use to build production code for your block inside `dist` folder.
-    - Runs once and reports back the gzip file sizes of the produced code.
+* `$ npm start` - Starts the build for development.
+* `$ npm run build` - Builds the code for production.
+* `$ npm run format` - Formats files.
+* `$ npm run lint:css` - Lints CSS files.
+* `$ npm run lint:js` - Lints JavaScript files.
+* `$ npm run packages-update` - Updates WordPress packages to the latest version.
 
 ## Blocks
 
- * Last Death (`/src/last-death/`) - Server Side Render of the Last Death
- * ... Of The day (`/src/of-the-day/`) - Server Side Render of the char/show/death of the day
+ * Last Death (`/src/last-death/`)
+ * ... Of The Day (`/src/of-the-day/`) 

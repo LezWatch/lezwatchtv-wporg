@@ -10,4 +10,4 @@
  */
 
 import './last-death/block.js';
-import './of-the-day/block.js';
+//import './of-the-day/block.js';

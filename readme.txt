@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, block
 Requires at least: 4.8
 Tested up to: 5.7
-Stable tag: 1.2.3
+Stable tag: 1.3
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatch.TV.
@@ -47,10 +47,10 @@ The data can be displayed via a widget, a shortcode, or a Block.
 
 **Blocks**
 
-* ... Of The Day
 * Last Death
 
 Notes:
+
 * If no type is passed to '... Of The Day' it will default to the character of the day.
 * If no date is passed to 'On This Day' it will default to today.
 * If no format type is passed to 'Stats' it will default to display both character and show stats.
@@ -110,20 +110,9 @@ It's only meant for in-house development, but flexibility is king.
 
 ==Changelog==
 
-= 1.2.2 =
+= 1.3 =
 
-* March 2021 by Ipstenu
-* Fix bug with transients
-* Compat with PHP 8 and WP 5.7
-
-= 1.2.1 =
-
-* August 2020 by Ipstenu
-* DRY: Combined translations
-* Adjust development hooks
-* Full compatibility with WP 5.5+ and PHP 7.4
-
-= 1.2 =
-
-* March 2020 by Ipstenu
-* Update for WP 5.4
+* May 2021 by Ipstenu
+* Removed broken blocks (they'd been broken yonks and undocumented)
+* 5.7 compatibility (deprecation fixes)
+* Ported from CGB to create-block due to the former being apparently abandoned, and the later being official.
