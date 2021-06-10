@@ -116,3 +116,4 @@ It's only meant for in-house development, but flexibility is king.
 * Removed broken blocks (they'd been broken yonks and undocumented)
 * 5.7 compatibility (deprecation fixes)
 * Ported from CGB to create-block due to the former being apparently abandoned, and the later being official.
+* Escaping widgets to protect from XSS
