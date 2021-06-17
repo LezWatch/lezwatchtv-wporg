@@ -59,10 +59,23 @@ class LezWatchTV_Multi_Blocks {
 				'render_callback' => array( $this, 'render_otd' ),
 			)
 		);
+
+		register_block_type(
+			'lezwatchtv/about-show',
+			array(
+				'attributes'      => array(
+					'showname' => array(
+						'type' => 'string',
+					),
+				),
+				'render_callback' => array( $this, 'render_about_show' ),
+			)
+		);
+
 	}
 
 	/**
-	 * Render the calendar
+	 * Render the Of The Day
 	 */
 	public function render_otd( $atts ) {
 		$attributes = shortcode_atts(
@@ -72,8 +85,23 @@ class LezWatchTV_Multi_Blocks {
 			$atts
 		);
 		$otd_type   = sanitize_text_field( $attributes['otd'] );
+		$return     = LezWatchTV::of_the_day( $otd_type );
 
-		$return = LezWatchTV::of_the_day( $otd_type );
+		return $return;
+	}
+
+	/**
+	 * Render About the Show
+	 */
+	public function render_about_show( $atts ) {
+		$attributes = shortcode_atts(
+			array(
+				'showname' => '',
+			),
+			$atts
+		);
+		$showname   = sanitize_text_field( $attributes['showname'] );
+		$return     = LezWatchTV::about_show( $showname );
 
 		return $return;
 	}

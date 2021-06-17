@@ -72,6 +72,7 @@ class LezWatchTV {
 			add_action( 'admin_notices', array( $this, 'admin_notice_byq' ) );
 		}
 
+		add_filter( 'plugin_row_meta', array( $this, 'donate_link' ), 10, 2 );
 	}
 
 	/**
@@ -79,7 +80,6 @@ class LezWatchTV {
 	 */
 	public function init() {
 		add_shortcode( 'lwtv', array( $this, 'shortcode' ) );
-		add_filter( 'plugin_row_meta', array( $this, 'donate_link' ), 10, 2 );
 	}
 
 	/**
@@ -362,7 +362,6 @@ class LezWatchTV {
 		return '<p>' . $return . '</p>';
 	}
 
-
 	/**
 	 * this_year function.
 	 *
@@ -422,6 +421,25 @@ class LezWatchTV {
 		}
 
 		return $return;
+	}
+
+	// Render About a Show
+	public function about_show( $showname ) {
+
+		$default = __( 'Looking for more inforamtion on queer TV? Check out <a href="https://lezwatchtv.com">LezWatch.TV</a>, the greatest database of queer female, transgender, and non-binary tv representation.' );
+
+
+		// right now nothing
+		// This needs to check if there's a show matching the name as best it can
+		// and then return details
+		// Looking for more info on XXX?
+		// Next Airing, etc
+		// if it can't find the show, it should be an ad for LezWatch.
+
+		$return = '<div class="lezwatchtv about-show">' . $message . '</div>';
+
+		return $return;
+
 	}
 
 	// donate link on manage plugin page
