@@ -1,9 +1,9 @@
 === LezWatch.TV News and Information ===
 Contributors: Ipstenu, liljimmi
-Tags: television, queer, lesbian, tv, block
+Tags: television, queer, lesbian, tv, blocks
 Requires at least: 4.8
-Tested up to: 5.7
-Stable tag: 1.3
+Tested up to: 5.8
+Stable tag: 2.0
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatch.TV.
@@ -12,13 +12,12 @@ Display information on queer female, transgender, and non-binary representation 
 
 [LezWatch.TV](https://lezwatchtv.com/) catalogs and documents queer female, transgender, and non-binary characters, as well as their actors and shows from TV, web and streaming media. With that data, statistics are calculated on the state of international queer story representation. We provide easy and free access to finding the best shows with queer characters and stories in the genres fans want to see. We can help you keep up to date with the global happenings of queer representation on television.
 
-Currently we provide the following information about those characters:
+Currently we provide information on:
 
+* **About This Show:** Details about a specific show
 * **... of the Day:** A character or show (or death of a character) of the current day
 * **Last Death:** The latest character death
 * **On This Day:** The names of characters who died on that day
-* **Statistics:** The percentage of characters who died and/or shows with death
-* **This Year:** An overview of data from a specific year
 
 = Privacy Policy =
 
@@ -28,14 +27,13 @@ By using this plugin, you agree to the [terms of Use of LezWatch.TV](https://lez
 
 = Usage =
 
-The data can be displayed via a widget, a shortcode, or a Block.
+The data can be displayed via a widget, a shortcode, or a Gutenberg block.
 
 **Widgets**
 
 * **LWTV - ... Of The Day**
 * **LWTV - On This Day**
 * **LWTV - Last Death**
-* **LWTV - Statistics**
 
 **Shortcodes**
 
@@ -47,7 +45,9 @@ The data can be displayed via a widget, a shortcode, or a Block.
 
 **Blocks**
 
+* About This Show
 * Last Death
+* ... Of The Day
 
 Notes:
 
@@ -68,7 +68,7 @@ As accurate as humanly possible. LezWatch.TV content is curated by hand.
 
 = Is this US shows only? =
 
-No! LezWatch.TV records shows from the entire planet.
+No! LezWatch.TV documents international television, including streaming media.
 
 = Who owns LezWatch.TV =
 
@@ -109,6 +109,11 @@ It's only meant for in-house development, but flexibility is king.
 5. After the plugin has successfully installed, click "Activate Plugin" and enjoy!
 
 ==Changelog==
+
+= 2.0 =
+
+* [DATE] by Ipstenu
+* New blocks for 'About this Show' and '... Of the Day'
 
 = 1.3 =
 
