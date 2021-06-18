@@ -9,6 +9,5 @@
  * Webpack is compiling as the input file.
  */
 
-import './about-show/block.js';
 import './last-death/block.js';
 import './of-the-day/block.js';

@@ -14,7 +14,6 @@ Display information on queer female, transgender, and non-binary representation 
 
 Currently we provide information on:
 
-* **About This Show:** Details about a specific show
 * **... of the Day:** A character or show (or death of a character) of the current day
 * **Last Death:** The latest character death
 * **On This Day:** The names of characters who died on that day
@@ -45,7 +44,6 @@ The data can be displayed via a widget, a shortcode, or a Gutenberg block.
 
 **Blocks**
 
-* About This Show
 * Last Death
 * ... Of The Day
 

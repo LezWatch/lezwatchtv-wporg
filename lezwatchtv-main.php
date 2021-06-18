@@ -3,7 +3,7 @@
  * Plugin Name: LezWatch.TV News & Information
  * Plugin URI: https://lezwatchtv.com/about/resources/
  * Description: Display information on queer female and trans representation on TV. Brought to you by LezWatch.TV.
- * Version: 1.3
+ * Version: 2.0
  * Author: LezWatch.TV
  * Author URI: https://lezwatchtv.com/
  * License: GPLv2 (or Later)
