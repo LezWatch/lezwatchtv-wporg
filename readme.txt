@@ -2,7 +2,7 @@
 Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, blocks
 Requires at least: 4.8
-Tested up to: 5.8
+Tested up to: 5.9
 Stable tag: 2.0
 License: GPLv2 (or Later)
 
@@ -16,7 +16,6 @@ Currently we provide information on:
 
 * **... of the Day:** A character or show (or death of a character) of the current day
 * **Last Death:** The latest character death
-* **On This Day:** The names of characters who died on that day
 
 = Privacy Policy =
 
@@ -31,7 +30,6 @@ The data can be displayed via a widget, a shortcode, or a Gutenberg block.
 **Widgets**
 
 * **LWTV - ... Of The Day**
-* **LWTV - On This Day**
 * **LWTV - Last Death**
 
 **Shortcodes**
@@ -51,7 +49,6 @@ Notes:
 
 * If no type is passed to '... Of The Day' it will default to the character of the day.
 * If no date is passed to 'On This Day' it will default to today.
-* If no format type is passed to 'Stats' it will default to display both character and show stats.
 * If no year is passed to 'This Year' it will default to this current year.
 
 == Frequently Asked Questions ==
@@ -82,7 +79,7 @@ Because the site data is from LezWatch.TV and that's what we specialize in. If s
 
 = What information from my site is tracked? =
 
-The IP address and domain of sites that use this plugin are tracked _only_ when the plugin is activated and used on the front-end of your website. No data is tracked until a widget or shortcode is in place. For more information, please review the following:
+The IP address and domain of sites that use this plugin are tracked _only_ when the plugin is activated and used on the front-end of your website. No data is tracked until a widget, block, or shortcode is in place. For more information, please review the following:
 
 * [Terms of Use](https://lezwatchtv.com/tos/)
 * [Privacy Policy](https://lezwatchtv.com/tos/privacy/)
@@ -110,8 +107,8 @@ It's only meant for in-house development, but flexibility is king.
 
 = 2.0 =
 
-* [DATE] by Ipstenu
-* New blocks for 'About this Show' and '... Of the Day'
+* October 2021 by Ipstenu
+* Updating blocks
 
 = 1.3 =
 

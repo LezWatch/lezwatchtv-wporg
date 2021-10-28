@@ -12,6 +12,5 @@ This project is bootstrapped by [the official WordPress create-block tool](https
 
 ## Blocks
 
- * About This Show (`/src/about-show`)
  * Last Death (`/src/last-death/`)
  * ... Of The Day (`/src/of-the-day/`)

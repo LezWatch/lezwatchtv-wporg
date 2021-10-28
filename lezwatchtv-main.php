@@ -193,7 +193,7 @@ class LezWatchTV {
 			$response = json_decode( $response, true );
 			// translators: %s is the amount of time since a queer death (1 day, 2 days, 1 month, etc)
 			$return  = '<p>' . sprintf( __( 'It has been %s since the last queer female, non-binary, or transgender death on television', 'lezwatchtv' ), '<strong>' . human_time_diff( $response['died'], current_time( 'timestamp' ) ) . '</strong> ' );
-			$return .= ': <a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . gmdate( 'F j, Y', $response['died'] ) . '</p>';
+			$return .= ': <span class="lwtv-recently-dead"><a href="' . $response['url'] . '">' . $response['name'] . '</a> - ' . gmdate( 'F j, Y', $response['died'] ) . '</span></p>';
 		}
 
 		$return = '<div class="lezwatchtv last-death">' . $return . '</div>';
