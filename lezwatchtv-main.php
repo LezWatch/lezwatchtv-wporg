@@ -428,7 +428,6 @@ class LezWatchTV {
 
 		$default = __( 'Looking for more inforamtion on queer TV? Check out <a href="https://lezwatchtv.com">LezWatch.TV</a>, the greatest database of queer female, transgender, and non-binary tv representation.' );
 
-
 		// right now nothing
 		// This needs to check if there's a show matching the name as best it can
 		// and then return details
