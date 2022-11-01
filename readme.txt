@@ -2,7 +2,7 @@
 Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, blocks
 Requires at least: 4.8
-Tested up to: 5.9
+Tested up to: 6.1
 Stable tag: 2.0
 License: GPLv2 (or Later)
 
