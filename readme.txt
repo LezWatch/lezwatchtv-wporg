@@ -3,7 +3,7 @@ Contributors: Ipstenu, liljimmi
 Tags: television, queer, lesbian, tv, blocks
 Requires at least: 4.8
 Tested up to: 6.3
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv2 (or Later)
 
 Display information on queer female, transgender, and non-binary representation on TV. Brought to you by LezWatch.TV.
@@ -104,6 +104,11 @@ It's only meant for in-house development, but flexibility is king.
 5. After the plugin has successfully installed, click "Activate Plugin" and enjoy!
 
 ==Changelog==
+
+= 2.0.1 =
+
+* August 2023 by Ipstenu
+* PHP 8.2 compat
 
 = 2.0 =
 
